@@ -2,7 +2,7 @@
 
 _My open-source website with a portfolio, blog posts, and notes!_
 
-> **Notice**
+> **Note**
 >
 > This site was generated with the new & excellent literate programming tool,
 > [Quarto](https://quarto.org)!
