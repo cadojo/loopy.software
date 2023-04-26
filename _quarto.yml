@@ -1,0 +1,80 @@
+project:
+  type: website
+  output-dir: _site
+
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    mainfont: "'Roboto', sans-serif;"
+    monofont: "'Roboto Mono', monospace;"
+    fontsize: 14pt
+    link-external-icon: false
+    link-external-newwindow: true
+    email-obfuscation: references
+
+    css: formatting/styles.css
+    theme: 
+      light: [ pulse,  "formatting/common.scss", "formatting/light.scss" ]
+      dark:  [ pulse,  "formatting/common.scss", "formatting/dark.scss"  ]
+    header-includes: |
+      <meta name="theme-color" content="#114B5F"/>
+
+website:
+  title: '<code style="color: white; background-color: transparent;">loopy.software</code>'
+  image: "/images/orbits.webp"
+  favicon: "/images/profile.webp"
+  description: Posts about open-source scientific software, alongside a personal about!
+
+  twitter-card: true
+  open-graph: true
+
+  site-url: https://loopy.software
+  repo-url: https://github.com/cadojo/loopy.software
+  repo-actions: [issue]
+  search:
+    type: textbox
+  page-navigation: true
+  page-footer:
+    left:
+      - text: "Licenses"
+        href: permission/index.md
+    center:
+      - text: "Credits"
+        href: credits/index.md
+      - text: "Privacy"
+        href: privacy/index.qmd
+    right:
+      - icon: twitter
+        href: https://twitter.com/code_typed
+        aria-label: Twitter
+      - icon: github
+        href: https://github.com/cadojo
+        aria-label: GitHub
+
+  navbar:
+    collapse: true
+    background: primary
+    left:
+      - text: About
+        file: about/index.qmd
+      - text: Blog
+        file: blog/index.qmd
+      - text: Packages
+        file: packages/index.qmd
+        
+  sidebar:
+    - id: about
+      contents:
+        - section: "Background"
+          contents:
+            - about/background/introduction/index.md
+            - about/background/education/index.md
+        - section: "Communication"
+          contents:
+            - about/communication/publications/index.md
+            - about/communication/presentations/index.md
+        - section: "Software"
+          contents:
+            - about/software/scientific/index.md
+            - about/software/miscellaneous/index.qmd

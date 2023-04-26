@@ -1,0 +1,12 @@
+---
+title: "`rich-admonitions`"
+package: rich-admonitions
+image: usage.png
+description: Markdown-style admonitions in Python, thanks to `rich`!
+docs: "https://github.com/cadojo/rich-admonitions/blob/main/README.md"
+
+categories: 
+  - Python
+  - Styling
+  - Terminal
+---

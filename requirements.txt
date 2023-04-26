@@ -1,0 +1,8 @@
+numpy
+scipy
+jupyter
+ipykernel
+rich-admonitions
+module-hygiene
+plum-dispatch
+block-scopes

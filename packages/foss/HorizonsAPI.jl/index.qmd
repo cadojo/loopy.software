@@ -1,0 +1,12 @@
+---
+title: "`HorizonsAPI.jl`"
+package: HorizonsAPI.jl
+image: usage.png
+description: Query NASA JPL's HORIZONS interface with Julia!
+docs: "https://docs.loopy.software/HorizonsAPI.jl"
+
+categories: 
+  - Julia
+  - Ephemeris
+  - Astrodynamics
+---

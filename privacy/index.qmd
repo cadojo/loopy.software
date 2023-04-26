@@ -1,0 +1,20 @@
+---
+title: Privacy
+subtitle: "_No advertisements today, hopefully no trackers tomorrow!_"
+sidebar: false
+---
+
+:::{.callout-note appearance="simple"}
+
+It is my hope that this website has **no trackers at all** one day. Right now, I believe I'm a bit short of 
+that goal. Some of the math-formatting libraries, e.g. MathJax, use cookies which browsers label 
+trackers. In addition, on my blog-related pages, I use a MailChimp widget to add a subscription field.
+That widget uses Javascript, and I believe there is a tracker embedded in that Javascript. MailChimp
+also shows warnings on their website about information they give to Meta (Facebook). Gross! 
+
+I'm going to work to remove these trackers over time. This site will always be free. I think the home 
+page and portfolio pages have no trackers at all! That's motivating me to keep going with this goal.
+
+Thank you [Quarto](https://quarto.org) for providing tracker-free website templates!
+
+:::

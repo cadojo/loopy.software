@@ -1,0 +1,12 @@
+---
+title: "`HorizonsEphemeris.jl`"
+package: HorizonsEphemeris.jl
+image: usage.png
+description: Fetch ephemeris data from NASA's HORIZONS platform.
+docs: "https://docs.loopy.software/HorizonsEphemeris.jl"
+
+categories: 
+  - Julia
+  - Ephemeris
+  - Astrodynamics
+---

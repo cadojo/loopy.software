@@ -1,0 +1,10 @@
+/* css styles */
+
+/*-- scss:defaults --*/
+$body-bg: white;
+$body-color: black;
+$link-color: #3c839b;
+
+.navbar .quarto-color-scheme-toggle:not(.alternate) .bi::before {
+    transform: scale(1.25);
+}

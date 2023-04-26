@@ -1,0 +1,19 @@
+---
+title: "`dimples`"
+package: dimples
+image: usage.png
+description: A super secret project!
+docs: "/packages/foss/dimples"
+draft: true
+include-before-body: 
+    text: ""
+
+categories: 
+  - Python
+  - Pipedream
+  - Unreleased
+---
+
+## Oh Jeez
+
+This project is still private!

@@ -1,0 +1,12 @@
+---
+title: "`PolynomialGTM.jl`"
+package: PolynomialGTM.jl
+image: usage.png
+description: Publicly available polynomial models for a model aircraft!
+docs: "https://docs.loopy.software/PolynomialGTM.jl"
+
+categories: 
+  - Julia
+  - Dynamics
+  - Modeling
+---

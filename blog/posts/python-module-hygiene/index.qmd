@@ -1,0 +1,347 @@
+---
+title: "Module Hygiene in Python"
+description: "We can and should do more to clean up our Python namespaces!"
+date: "2022-08-27"
+file-modified: "2022-08-28"
+author: "Joe(y) Carpinelli"
+image: "/images/module-hygiene.png"
+categories:
+  - Python
+  - "Design Patterns"
+  - Technical
+  - Cursed
+aliases:
+  - /blog/posts/python-module-hygiene.html
+format:
+  html: default
+  ipynb: 
+    embed-resources: true
+    output-file: python-module-hygiene.ipynb
+---
+
+:::{.callout-warning appearance="simple"}
+This is gonna get pretty opinionated! I want to say this upfront: 
+I'm no Python expert. If I got something wrong, please leave a comment, 
+send an email, or otherwise let me know!
+:::
+
+## Python Namespaces
+
+Ask yourself the following question: where in a Python program can you store variables which are distinct 
+from the rest of your program? As you think of answers to this question, 
+you can loosely think about anything in Python which is dot-accessible, 
+e.g. `<something>.attribute`; in this example, `<something>` is 
+functioning as a _namespace_. 
+
+:::{.callout-note appearance="simple"}
+
+## Definition: _namespace_
+In computer programming, a namespace refers to some element of a program
+which separates named variables from the rest of the program.
+
+:::
+
+There are plenty of examples of namespaces in Python: modules, classes, class instances, etc.
+In fact, all of those examples are `object` instances in Python! Each assertion made in the 
+code below evaluates to `True`.
+
+```{python}
+# Modules are objects!
+assert isinstance(__builtins__, object) 
+
+# Classes are objects!
+assert isinstance(int, object)
+
+# Class instances are objects!
+assert isinstance(int(0), object)
+```
+
+For the remainder of this post, let's focus on Python _modules_ specifically.
+**We can and should do more to make Python modules sparse!**
+
+## Python Modules
+
+:::{.callout-note appearance="simple"}
+
+## Definition: _module_
+In computer programming, modules are explicit namespace declarations which 
+provide separate _compartments_ in your program where variable names are distinct.
+A new variable declared in one module is different than a new variable declared in 
+another module, even if those variables have the same name!
+
+:::
+
+In Python, modules are defined by `.py` files. There's no easily supported 
+way to create modules dynamically, though that would make for a nice future post!
+You need to write your module's contents to a `.py` file, make that file available on `sys.path`, 
+and then load that module, i.e. with an `import` statement. The `sys.path` variable is where Python will look for the name `something` when you type `import something`. [You can check this path yourself! Try `import sys; print(sys.path)` sometime.]{.aside}
+
+## Two Categories of Dependencies
+
+I'd like to define two terms before we continue: import-time, and usage-time. Import-time refers to the 
+moment when a module is first loaded; the module is executed just as if you pasted each line into a Python 
+interpreter. Usage-time refers to all subsequent usage of a Python module.
+
+```python
+import numpy # import time
+print(numpy.abs(-1)) # usage time
+```
+
+This distinction will be important for the module hygiene recipe described later! Python developers 
+commonly load import-time and usage-time dependencies at the top of their modules. If you instead 
+separate import-time and usage-time dependencies, you can safely remove all import-time dependencies
+from your module's namespace!
+
+## Module Example: `coordinates.py`
+
+Let's pretend the code block below is placed in a file called `coordinates.py`. 
+If this file is in a directory found in `sys.path`, then you have access to a module 
+titled `coordinates`! Everything defined in `coordinates.py` will be available to you, 
+even variables defined with leading underscores. 
+
+In your new module, `coordinates`, we'll bring in some math functions from `numpy`, 
+define a public-facing function for users of our module, and define some temporarily
+necessary variables. As you read through, try to find the variables which are only 
+temporarily necessary! 
+
+:::{.callout-tip appearance="simple"}
+
+## Hint
+
+Once the full module is loaded, do we really need any of the typing variables anymore?
+:::
+
+```{python}
+
+"""
+Pretend this is the contents of a new Python module, 
+"coordinates.py". This module provides common coordinate 
+transformations for you!
+"""
+
+
+#
+# First, let's define some types to help us 
+# write declaritive & modern Python code!
+#
+
+Real = int | float 
+from typing import NamedTuple
+
+
+#
+# We'll also need some math functions from numpy. 
+# We could use Python's built-in `abs`, `sqrt`, 
+# `sin`, and `cos` functions, but numpy's versions 
+# will have better performance.
+#
+
+from numpy import arctan2 as atan2, sqrt, cos, sin
+
+
+#
+# Finally, my favorite Python package: plum-dispatch. 
+# It provides Julia-like type dispatching to Python! 
+# Of course, you take a performance hit, but look at 
+# how clean the code below is! 🤩
+#
+
+from plum import dispatch
+
+
+#
+# Now that we have the setup out of the way, let's 
+# add some functionality!
+#
+
+class Rectangular(NamedTuple):
+    """
+    Defines a two-dimensional rectangular coordinate.
+    """
+    x: Real
+    y: Real
+
+class Polar(NamedTuple):
+    """
+    Defines a two-dimensional polar coordinate.
+    """
+    r: Real
+    θ: Real
+
+@dispatch
+def rectangular(coordinate: Rectangular) -> Rectangular:
+    return coordinate
+
+@dispatch
+def rectangular(coordinate: Polar) -> Rectangular:
+    return Rectangular(
+        x = coordinate.r * cos(coordinate.θ),
+        y = coordinate.r * sin(coordinate.θ),
+    )
+
+@dispatch
+def polar(coordinate: Rectangular) -> Polar:
+    return Polar(
+        r = sqrt(coordinate.x**2 + coordinate.y**2),
+        θ = atan2(-coordinate.y, coordinate.x),
+    )
+
+@dispatch
+def polar(coordinate: Polar) -> Polar:
+    return coordinate
+
+```
+
+
+Now if you load `coordinates.py` using `import coordinates`, and then you inspect the contents
+of the module, what will you find? You'll certaintly find names which are the purpose of the package, 
+such as the `Rectangular` and `Polar`, and the `rectangular` and `polar` methods. Unfortunately, 
+you'll also find a lot of names you aren't intended to use: `Real`, `NamedTuple`, `atan2`, 
+`sqrt`, `cos`, `sin`, and `dispatch`. 
+
+Most Python developers just ignore all of those names, and that is absolutely fine. Personally,
+as I write Python code, these extra names irk me a bit; why am I providing names which I never 
+intend for my users to use?
+
+## Module Cleanup Recipe
+
+We can get rid of the extraneous names in our modules by simply calling `del` on each 
+unwanted name at the end of our module files. If this pattern is used, users will be able 
+to programatically check for your public API by reading the contents of 
+`yourmodule.__export__`, and IDE tab-completion won't show any private names.
+
+This pattern comes in three steps: define names which you intend to keep, write the primary
+contents of your module, and delete all unwanted names at the end of your module. There's one 
+additional concept you'll need to keep in mind: you can no longer follow the common Python 
+practice of importing usage-time dependencies at the top-level of your module! Instead, you can 
+do so at the beginning of each function definition. 
+
+Sound weird? Fear not! The rest of this post walks through this pattern in detail, and provides 
+a bit more information which can help you determine if this pattern is useful for you. 
+
+### Define Exported Names
+
+Rust specifies elements of a public API by using the keyword `pub`. Julia specifies
+exported names with the keyword `export`. Python can provide the means to
+accomplish (practically) the same thing! 
+(Let's decide to define an `__export__`variable in all of our Python modules.)[This rule also applies to packages and subpackages because they are also Python modules!]{.aside} 
+This `__export__` variable 
+should be some kind `str` collection, like a `list`, `tuple`, `set`, or 
+any other `Iterable` type. Personally, I like using the `set` type because it feels 
+most in keeping with the _spirit_ of an exported names collection; names can't be 
+repeated, and order doesn't matter!
+
+```python
+__export__ = {
+    "Rectangular", "Polar",
+    "rectangular", "polar",
+}
+```
+
+### Import Temporary Names
+
+With this `__export__` collection defined, we can safely include _any_ temporary 
+names we want, just as we normally would. This commonly includes types defined in 
+the built-in `typing` package. Import all of the temporary functionality you need, and don't 
+worry about polluting your module's namespace; we'll clean up this namespace soon!
+
+```python
+Real = int | float
+from typing import NamedTuple
+from plum import dispatch
+```
+
+### Implement the Public API
+
+You have the temporary names you need to add proper typing and import-time functionality
+to your public API. Let's actually write the API! This is equivalent to all 
+of your exported names, as declared above in `__export__`.
+
+Note that, so far, we have only imported the import-time dependencies. We can't import 
+our usage-time dependencies in our module without adding them to `__export__`; otherwise, 
+our module will throw a `NameError` as it attempts to reference previously deleted names!
+
+For example, if we write `from numpy import sin, cos` in our top-level module, 
+and then delete `sin` and `cos` at the end of the module, all code which relies on `sin` and 
+`cos` at usage-time will be calling undefined functions! Rather than throw all of our 
+usage-time dependencies into `__export__`, we can simply add them to our function definitions. 
+If you're worried that those imports will be loaded every time you call the function, don't! 
+Each `import` statement within a function is __only__ evaluated __the first time__ you call 
+the function.
+
+```{python}
+
+class Rectangular(NamedTuple):
+    """
+    Defines a two-dimensional rectangular coordinate.
+    """
+    x: Real
+    y: Real
+
+class Polar(NamedTuple):
+    """
+    Defines a two-dimensional polar coordinate.
+    """
+    r: Real
+    θ: Real
+
+@dispatch
+def rectangular(coordinate: Rectangular) -> Rectangular:
+    return coordinate
+
+@dispatch
+def rectangular(coordinate: Polar) -> Rectangular:
+    # We've moved this import from the top-level module to within this function! 
+    from numpy import sin, cos 
+    return Rectangular(
+        x = coordinate.r * cos(coordinate.θ),
+        y = coordinate.r * sin(coordinate.θ),
+    )
+
+@dispatch
+def polar(coordinate: Rectangular) -> Polar:
+    # We've moved this import from the top-level module to within this function! 
+    from numpy import sqrt, arctan2 as atan2
+    return Polar(
+        r = sqrt(coordinate.x**2 + coordinate.y**2),
+        θ = atan2(-coordinate.y, coordinate.x),
+    )
+
+@dispatch
+def polar(coordinate: Polar) -> Polar:
+    return coordinate
+
+```
+
+### Delete Private Names
+
+Now your module definition is coming to a close! You're done implementing all of the 
+features of your project, and you're about to type `if __name__ == "__main__"`.
+What I'm proposing, with this whole blog post, is this: don't stop there! Add an 
+`else` condition to that `if` statement!
+
+If your module is not the top-level program (known as "__main__"), then you 
+should clean up all of your non-exported names with the pattern below! You need
+to put this pattern under an `else` condition (or a `__name__ != "__main__"` condition) 
+because Python interpreters, like `IPython`, stick "magic" global variables in the 
+top-level namespace. You don't want to delete those!
+
+```{python}
+if __name__ != "__main__":
+    for _ in (*locals(), "_"):
+        if not _.startswith("__") and _ not in __export__:
+            del locals()[_]
+```
+
+## Closing
+
+This all might seem a bit strange, but I really like this design pattern. 
+When writing code in this way, I find I'm constantly thinking about the required 
+**lifetime** of each name I introduce. For simplicity's sake, there's a strong 
+argument in favor of keeping each name for the shortest possible lifetime. 
+Following this advice to its conclusion results in Python modules which are 
+sparse, simple for users to interact with and understand, and which have clearly 
+separated import-time and usage-time dependencies. 
+
+Check out my open-source Python package, [`module-hygiene`](https://pypi.org/project/module-hygiene),
+which implements the recipe described in this post! 

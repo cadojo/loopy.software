@@ -1,0 +1,27 @@
+author: "Joe(y) Carpinelli"
+comments:
+  giscus:
+    repo: cadojo/loopy.software
+    category: Blog
+    theme: preferred_color_scheme
+search: true
+title-block-banner: primary
+title-block-banner-color: body
+toc: true
+toc-depth: 4
+toc-location: left
+sidebar: false
+code-fold: show
+code-tools: true
+
+# include-before-body: 
+#   - ../focus.html
+
+include-after-body: 
+  - ../disclaimer.html
+  - ../subscribe.html
+
+execute:
+  echo: true
+  output: true
+  freeze: auto

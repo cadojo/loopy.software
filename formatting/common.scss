@@ -1,0 +1,13 @@
+/* css styles */
+
+/*-- scss:defaults --*/
+$primary: #114B5F;
+
+.quarto-grid-item .card-title {
+    padding-bottom: 1em;
+    font-size: 0.85em;
+}
+
+.quarto-grid-item code {
+    background-color: transparent;
+}

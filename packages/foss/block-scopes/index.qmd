@@ -1,0 +1,12 @@
+---
+title: "`block-scopes`"
+package: block-scopes
+image: usage.png
+description: Block scoping in Python!
+docs: "https://github.com/cadojo/block-scopes/blob/main/README.md"
+
+categories: 
+  - Python
+  - Cursed
+  - Scoping
+---

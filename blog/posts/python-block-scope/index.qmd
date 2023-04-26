@@ -1,0 +1,91 @@
+---
+draft: true
+title: "Adding Block Scope to Python"
+description: "Context managers can provide sketchy block scoping!"
+date: "2022-08-17"
+file-modified: "2022-08-17"
+author: "Joe(y) Carpinelli"
+categories:
+  - Python
+  - "Design Patterns"
+  - Technical
+  - Cursed
+aliases:
+  - /blog/posts/python-block-scope.html
+format:
+  html: default
+  ipynb: 
+    embed-resources: true
+    output-file: python-block-scope.ipynb
+---
+
+:::{.callout-caution}
+**This post is in-development.** Check back later!
+:::
+---
+
+```{python}
+#| echo: false
+#| output: false
+import rich.traceback, rich.pretty
+rich.traceback.install()
+rich.pretty.install()
+
+del rich
+```
+
+## Python Scoping
+
+When you start a Python process, what variables are already defined? If you start a **standard Python 3.10
+interpreter** and call `locals()`, you'll see the following output (on MacOs). You'll also find that 
+`locals() == globals()` evaluates to `True`! What do the `locals` and `globals` functions _do_, and 
+how does Python scoping work? Can you use "block scoping" in Python? All of these questions are 
+answered in this post!
+
+:::{.callout-note appearance="simple"}
+## `python -c 'print(locals())' # on MacOs, with some human formatting for readability`
+    {
+      '__name__': '__main__', 
+      '__doc__': None, 
+      '__package__': None, 
+      '__loader__': <class '_frozen_importlib.BuiltinImporter'>, 
+      '__spec__': None, 
+      '__annotations__': {}, 
+      '__builtins__': <module 'builtins' (built-in)>
+    }
+:::
+
+If you use `IPython`, you'll find a lot more in your global namespace! `IPython` has to track 
+your command history _somewhere_, right? It turns out that your command history, and other 
+`IPython` metadata are all stored as Python variables in the same Jupyter kernel as your code!
+Each of these non-user-facing variables (variables that `IPython` doesn't expect you to use)
+are named with a leading underscore; this is a common pattern in Python.
+
+```{python}
+locals()
+```
+
+
+Let's say you open up a Python [interpreter](https://docs.python.org/3/tutorial/interpreter.html),
+also known as a [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop), and define a variable `x`.
+Then, you write a function, which declares a local variable `x`. Next, you import `somemodule`, and 
+reference `somemodule.x`. You now have three separate variables named `x`! When you continue to write code,
+which variable will Python pick when you type the letter `x`? The answer depends on the _context_ of the 
+code you're writing. This concept in computer science is known as 
+[_scope_](https://en.wikipedia.org/wiki/Scope_(computer_science)). There are are elements in a Python program,
+and practically all popular programming languages, which serve as proverbial _drawers_, or _containers_, for 
+your variables. A developer might define a variable `x` in `somemodule`: that is `somemodule`'s variable `x`!
+The same developer, in the same program, might define a local variable `x` in a function: that is the function's 
+_local variable_ `x`. Finally, the developer might set a variable `x` at the top-level of the program: that is 
+the program's _global variable_ `x`. 
+
+When a variable is used at some point in a program, Python will first check for the variable in _local scope_.
+
+And thank goodness! Imagine, for a moment,that Python did **not** check for the 
+context in which a variable was used. In this alternate universe, Python simply assumes that each 
+variable name is unique in a program. Everything would break rather quickly.
+
+
+
+You've probably heard that [Python doesn't allow for private variables](https://docs.python.org/3/faq/programming.html#i-try-to-use-spam-and-i-get-an-error-about-someclassname-spam).^[Python 3.10 [documentation](https://docs.python.org/3/faq/programming.html#i-try-to-use-spam-and-i-get-an-error-about-someclassname-spam) states: _"...an outside user can still deliberately access the `_classname__spam` attribute, and private values are visible in the object’s `__dict__`. Many Python programmers never bother to use private variable names at all."_] Using leading underscores in variable names to indicate the _intent_ of private 
+objects is a very common pattern in Python code. I do not like this! Part of the benefit of 

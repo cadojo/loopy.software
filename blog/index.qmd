@@ -1,0 +1,31 @@
+---
+title:
+  '<code style="color: var(--bs-body-color); background-color:
+  var(--bs-body-bg);">write(loopy.software)</code>'
+subtitle:
+  "_Writing relating to scientific computing, astrodynamics, and
+  politics._"
+sidebar: false
+feed: true
+
+margin-header: ./subscribe.html
+
+listing:
+  contents: posts
+  categories: numbered
+  feed:
+    title: "`write(loopy.software)`"
+    image: "/images/orbits.jpeg"
+    description:
+      _Writing relating to scientific computing, astrodynamics, controls, and politics._
+  sort: "date desc"
+  sort-ui: true
+  filter-ui: true
+  fields: [date, image, title, description, reading-time]
+
+css: styles.css
+
+aliases:
+  - "/blog/posts"
+  - "/blog/posts.html"
+---

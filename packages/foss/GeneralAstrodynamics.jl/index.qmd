@@ -1,0 +1,12 @@
+---
+title: "`GeneralAstrodynamics.jl`"
+package: GeneralAstrodynamics.jl
+image: halos.png
+description: General calculations, and iterative solvers, within astrodynamics!
+docs: "https://docs.loopy.software/GeneralAstrodynamics.jl"
+
+categories: 
+  - Julia
+  - Dynamics
+  - Astrodynamics
+---

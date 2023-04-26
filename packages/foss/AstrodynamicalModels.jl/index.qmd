@@ -1,0 +1,12 @@
+---
+title: "`AstrodynamicalModels.jl`"
+package: AstrodynamicalModels.jl
+image: usage.png
+description: Construct models commonly used in astrodynamics.
+docs: "https://docs.loopy.software/AstrodynamicalModels.jl"
+
+categories: 
+  - Julia
+  - Modeling
+  - Astrodynamics
+---

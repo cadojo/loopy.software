@@ -1,0 +1,49 @@
+---
+title: "Joe(y) Carpinelli"
+about:
+  id: about-heading
+  template: jolla
+  image: "images/goats.webp"
+  links:
+    - icon: github
+      text: "GitHub"
+      href: https://github.com/cadojo
+    - icon: twitter
+      text: "Twitter"
+      href: https://twitter.com/code_typed
+    - icon: envelope
+      text: "Email"
+      href: "mailto:joseph.d.carpinelli@loopy.software"
+
+sidebar: false
+---
+
+:::{#about-heading}
+
+<div id="lead" class="lead">
+  <center><p><i>Earth is the only planet with rainbows!</p></i></center>
+  <script>
+    let facts = [
+      'Our planet\'s sky glows blue!',
+      'The Vatican has more popes per capita than anywhere else.                                       ',
+      'There are more trees on Earth than stars in the Milky Way.                                      ',
+      'Humans consume around 12 billion pounds of coffee per year.                                     ',
+      'Earth is the only planet in our solar system with rainbows.                                     ',
+      'Modern transisters are smaller than the wavelength of visible light.                            ',
+      'That shooting star you saw could\'ve been astronaut poop!                                       ',
+      'In 2008, Norway knighted a penguin named Nils Olav.                                             ',
+      'The most money ever paid for a cow in an auction was $1.3 million.                              ',
+      'Every year, about 98% of the atoms in your body are replaced.                                   ',
+      'Elephants are the only mammals that can\'t jump.',
+      'Elephants are the only mammals with four knees.',
+      'American car horns beep in the tone of F.',
+      'Cats can hear ultrasound.',
+      'The Neanderthal\'s brain was bigger than yours. Sorry.',
+      '1 in 5,000 north Atlantic lobsters are born bright blue.'
+    ];
+    let fact = facts[Math.floor(Math.random() * facts.length)];
+    document.querySelector("#lead").innerHTML = "<center><p><i>" + fact + "</i></p></center>";
+  </script>
+</div>
+
+:::

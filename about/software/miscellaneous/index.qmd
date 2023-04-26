@@ -1,0 +1,117 @@
+---
+title: Miscellaneous Software
+subtitle: "Non-scientific software I've published."
+---
+
+## Python
+
+### `module-hygiene`
+
+This is a super opinionated project! The gist is this --- what if we cleaned up every unneccessary 
+name from a Python module once it's fully loaded? By using the pattern below, all of your namespaces 
+will be kept clean and tidy. 
+
+```python
+"""
+Pretend this is the contents of module.py!
+"""
+
+__export__ = {
+    "MyType",
+    "myfunc",
+}
+
+
+class MyType:
+    ...
+
+def myfunc(x): 
+    ...
+
+
+if __name__ == "__main__":
+    ...
+
+else:
+    for _ in (*locals(), "_"):
+        if not _.startswith("__") and _ not in __export__:
+            del locals()[_]
+
+```
+
+I put the above pattern in a package called [`module-hygiene`](https://pypi.org/project/module-hygiene/)!
+With this new package, you could rewrite `module.py` as follows.
+
+```python
+"""
+Pretend this is the contents of module.py!
+"""
+
+__export__ = {
+    "MyType",
+    "myfunc",
+}
+
+
+class MyType:
+    ...
+
+def myfunc(x): 
+    ...
+
+
+if __name__ == "__main__":
+    ...
+
+else:
+    from hygiene import cleanup
+    exec(cleanup())
+
+```
+
+### `rich-admonitions`
+
+The [`rich`](https://github.com/textualizeio/rich) Python package is excellent! I've added Julia-style 
+in-terminal Markdown admonitions via the [`rich-admonitions`](https://pypi.org/project/rich-admonitions/) 
+package! Check out some simple usage below.
+
+```{python}
+from rich import print
+from admonitions import Admonition
+
+message = Admonition.note(
+    Admonition.info(
+        Admonition.warning(
+            Admonition.danger(
+                Admonition("We're in too deep! 🥽", header="Oh jeez...", style="purple")
+            )
+        )
+    )
+)
+
+print(message)
+```
+
+### `block-scopes`
+
+Did you know that you can use context managers to provide "block scoping" in Python?
+Check out [`block-scopes`](https://pypi.org/project/block-scopes/) on Python's public package index,
+PyPI!
+
+```{python}
+from scopes import only
+
+x = 5
+
+with only("y"):
+    y = 6
+    z = 7
+
+print(f"{x=}")
+print(f"{y=}")
+
+try:
+    print(f"{z=}")
+except NameError:
+    print("The variable `z` is not in scope!")
+```

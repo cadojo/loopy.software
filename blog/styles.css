@@ -1,0 +1,13 @@
+div.quarto-post .thumbnail img {border-radius: 7px;}
+
+.img-fluid.figure-img {
+    border-radius: 7px;
+}
+
+#title-block-header.quarto-title-block.default .description, #title-block-header.quarto-title-block.default .abstract {
+    font-style: italic;
+}
+
+div.quarto-post .listing-description {
+    font-style: italic;
+}

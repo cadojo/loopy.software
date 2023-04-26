@@ -1,0 +1,27 @@
+---
+title:
+  '<code style="color: var(--bs-body-color); background-color:
+  var(--bs-body-bg);">package(loopy.software)</code>'
+subtitle:
+  "_The open source software packages I've developed and released!_"
+sidebar: false
+feed: true
+
+listing:
+  contents: foss
+  categories: numbered
+  type: grid
+  sort: 
+    - "title asc"
+  fields: [image, title, description, categories]
+
+  feed:
+    title: "`package(loopy.software)`"
+    image: "/images/orbits.jpeg"
+    description:
+        "_The open source software packages I've developed and released!_"
+
+aliases:
+  - "/packages/foss"
+  - "/packages/foss.html"
+---

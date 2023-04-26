@@ -1,0 +1,25 @@
+author: "Joe(y) Carpinelli"
+
+search: true
+title-block-banner: primary
+title-block-banner-color: body
+toc: true
+toc-depth: 4
+toc-location: left
+sidebar: false
+code-fold: show
+code-tools: true
+
+include-before-body:
+  text: | 
+    <meta http-equiv="Refresh" content="0; url={{< meta docs >}}"/>
+
+    <h3>👋 This is not the droid you're looking for...</h3>
+    <p>
+    This page should automatically forward you to the documentation for 
+    <a href={{< meta docs >}}>{{< meta package >}}</a>!
+    If you're seeing this page, that redirection probably didn't work. Consider 
+    <a href="https://github.com/cadojo/loopy.software/issues/new">opening an issue</a> if the problem 
+    persists! In the meantime, head over to <a href={{< meta docs >}}>{{< meta docs >}}</a> to 
+    find the content you came here for.
+    </p>

@@ -1,0 +1,6 @@
+{
+  "cSpell.enableFiletypes": ["!quarto", "mermaid", "toml"],
+  "cmake.configureOnOpen": false,
+  "prettier.proseWrap": "always",
+  "editor.formatOnSave": true
+}

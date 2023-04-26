@@ -1,0 +1,12 @@
+---
+title: "`module-hygiene`"
+package: module-hygiene
+image: usage.png
+description: Like the `__all__` variable, but more strict!
+docs: "https://github.com/cadojo/module-hygiene/blob/main/README.md"
+
+categories: 
+  - Python
+  - Cursed
+  - Scoping
+---

@@ -1,0 +1,13 @@
+author: "Joe(y) Carpinelli"
+search: false
+title-block-banner: primary
+title-block-banner-color: body
+toc: true
+toc-depth: 4
+toc-location: left
+sidebar: false
+
+execute:
+  echo: true
+  output: true
+  freeze: true

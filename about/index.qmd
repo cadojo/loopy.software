@@ -1,0 +1,14 @@
+---
+title:
+  '<code style="color: var(--bs-body-color); background-color:
+  var(--bs-body-bg);">about(loopy.software)</code>'
+subtitle:
+  "_Information about my background, education, and interests._"
+---
+
+:::{.callout-note appearance="simple"}
+
+Check the sidebar for more information about me! If you're looking for general information,
+start at the [About](/about/index.html) section's [Introduction](/about/background/introduction/).
+
+:::

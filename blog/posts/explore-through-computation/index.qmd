@@ -1,0 +1,467 @@
+---
+draft: true
+title: "Explore Through Computation"
+description: "An ode to computation as an educational tool."
+date: today
+file-modified: today
+author: "Joe(y) Carpinelli"
+
+categories:
+  - Julia
+  - Dynamics
+  - Offprint
+  - Technical
+
+aliases:
+  - "/blog/posts/exploration-through-computation.html"
+
+format:
+  revealjs:
+    embed-resources: true
+    output-file: explore-through-computation-slides.html
+    toc: false
+    mermaid-format: png
+  ipynb:
+    embed-resources: true
+    output-file: explore-through-computation.ipynb
+  html:
+    mermaid-format: svg
+
+# jupyter: julia-1.9
+code-fold: true
+execute:
+  echo: true
+  output: true
+---
+
+## Computational Playgrounds
+
+:::{.content-visible unless-format="revealjs"}
+
+To paraphrase [Alan Edelman](https://math.mit.edu/~edelman/), a professor of
+applied mathematics at MIT and co-creator of the Julia Programming Language: you
+can't fully understand a concept until you can compute it! I've found this to be
+true for all the technical concepts I've tried to learn. In some ways, this
+statement is obvious. Writing down how something works, step by step, helps you
+think through the full concept. Computer code is just that: step-by-step
+instructions. I don't think that's all Dr. Edelman meant, though. After you've
+written the "instructions" for a concept in code, you have a _playground_ where
+you can explore the concept quickly, and visually. Learning about
+[Keplerian orbits](https://en.wikipedia.org/wiki/Kepler_orbit)? You can plot the
+shape of each orbit as you change each orbital element. Working through
+differential equations? Modern software libraries allow you to simulate many
+differental systems in fractions of a second. You can _predict the future_ ---
+within some numerical tolerance --- in near-real time!
+
+This idea --- that _computation_ is a uniquely useful educational tool --- is
+what I want to discuss more in this post. To fully appreciate the concept of
+computation, and how we can make computations more efficient, I'll first define
+_what a computer is_, in broad strokes, and from the ground up. I'll highlight
+the [Julia Programming Language](https://julialang.org) as an excellent, modern
+computational tool. In closing, I'll try to learn a new-to-me technical concept
+by exploring each conceptual step through code. Read on!
+
+:::
+
+:::{.content-visible when-format="revealjs"}
+
+To paraphrase [Alan Edelman](https://math.mit.edu/~edelman/), a professor of
+applied mathematics at MIT and co-creator of the Julia Programming Language...
+
+> You can't fully understand a concept until you can compute it!
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+## What's in a Computer?
+
+Computers existed in my mind as "magical black boxes" for twenty years. Of
+course, they _aren't_ magical; to appease the poets, let's instead say they're
+not any more magical than any other physical thing in our world. We can build a
+_theoretical_ digital computer in just a few steps.
+
+:::
+
+:::{.content-visible when-format="revealjs"}
+
+## What's in a Computer? {auto-animate="true"}
+
+::::{.callout-note appearance="simple" icon="false"}
+
+_Computers are not magic!_ To prove it, let's build one "on paper"...
+
+::::
+
+## What's in a Computer? {auto-animate="true" .unnumbered}
+
+::::{.callout-note appearance="simple" icon="false"}
+
+### To appease the poets...
+
+_Computers are not **any more magical than anything else in our world**!_ To
+prove it, let's build one "on paper"...
+
+::::
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+### Binary Math
+
+We --- as humans --- have _arbitrarily chosen_ to use a language of mathematics
+with 10 _letters_: 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9. We can add, subtract,
+multiply, and divide these (small) numbers in our heads. We use these 10
+letters, or _digits_, to describe numbers _larger_ than 9. For example: 10, 11,
+12; I can do this all day. It is important to note that this 10 letter (digit)
+language of math is our own human construction. Using 10 digits is particularly
+intuitive to us because a whole lot of humans of 10 fingers, and 10 toes, but
+math works no matter _how_ you write each number! You could perform the same
+calculation using a language with 2 digits, or 8, or 10, or 16, or any other
+number of mathematical "letters", and you would find the same answer each time.
+
+Building an intuition for adding and subtracting numbers in binary **is not**
+necessary for building an intuation for how computers work. This is an
+_existence proof_: please convince yourself that math is universal, and that you
+can construct a complete mathematical language --- like the 10-digit "language"
+we humans have constructed --- using any number of "letters".
+
+:::
+
+:::{.content-visible when-format="revealjs"}
+
+## Binary Math
+
+- We describe mathematics with _language_
+  - The language humans most-often use has 10 "letters": 0, 1, 2, ..., 9
+  - We use these "letters", or _digits_, to describe larger numbers: 10, 11, 12,
+    ...
+  - \_This was an arbitrary choice **made by humans\_**
+- Mathematical calculations are the same _no matter what language you use_
+  - Math written with two digits can be called _binary math_
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+### Binary Logic
+
+A _calculation_ is _applied logic_, and a _digital_ calculation is applied
+_binary_ logic. The word _logic_ here can be defined as _a series of rules
+applied to some input, which produce some output_. The _binary_ prefix to the
+term _binary logic_ requires that any single input or output has only **two**
+possible states. None of this is new information to you: _computers operate on
+zeros and ones_. Here's what that means.
+
+:::
+
+:::{.content-visible when-format="revealjs"}
+
+## Binary Logic
+
+::::{.callout-note appearance="simple" icon="false"}
+
+Calculations are applied logic, and _digital_ calculations are applied _digital_
+logic.
+
+::::
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+#### The Definitions
+
+This section presents _binary logic_; everything here is all on-paper. We'll
+discuss _implementing_ this logic to build physical machines in the next
+section. We need to define only five more terms: two names for the allowed
+_values_ in our binary logical systems, and three primitive _operations_ we can
+perform on groups of binary values. All five definitions are simple, and the
+_names_ are the simplest. We could have chosen any names for the two values
+_allowed_ by the word _binary_, but "zero" and "one" are as good as any. It
+might help to "nickname" the zero value `false`, and the one value `true`. We
+have defined, and nicknamed, every possible value of any single input and output
+of binary systems.
+
+We now must define some primitive logical _operators_ that can be used to build
+binary systems. As it turns out, we need^[This is slightly, intentionally,
+misleading. You actually _can_ build complete binary systems using less than
+three logical primitives. For example, many modern computer chips are built
+almost [exclusively](https://en.wikipedia.org/wiki/NAND_gate) with the `NOT` and
+`AND` operators. Still, it's instructive to describe all three binary logical
+primitives, despite the fact that they're not _really_ primitives, and you can
+construct all three operations using a subset, like `NOT` and `AND`.] just three
+operators are sufficient: `NOT`, `AND`, and `OR`.
+
+The `NOT` operator takes in a single binary value, and outputs the _other_
+binary value: an input of `false` produces an output of `true`, and an input of
+`true` produces an output of `false`.
+
+:::
+
+:::{.content-visible when-format="revealjs"}
+
+## The Logical `NOT` Operator
+
+:::
+
+:::{.column-body-outset}
+
+```{mermaid}
+%%| label: fig-not
+%%| fig-cap: "A logical `NOT` operator."
+%%| echo: false
+
+%%{init: {"flowchart": {"htmlLabels": false}} }%%
+flowchart LR
+  IN1[TRUE] --> N1{NOT} --> OUT1[FALSE]
+  IN2[FALSE] --> N2{NOT} --> OUT2[TRUE]
+
+  style IN1 fill-opacity:0, stroke-opacity:0;
+  style IN2 fill-opacity:0, stroke-opacity:0;
+  style OUT1 fill-opacity:0, stroke-opacity:0;
+  style OUT2 fill-opacity:0, stroke-opacity:0;
+```
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+The `AND` operator takes in _two_ binary values, and outputs a single binary
+value which is `true` when both inputs are `true`, and `false` otherwise.
+
+:::
+
+:::{.content-visible when-format="revealjs"}
+
+## The Logical `AND` Operator
+
+:::
+
+:::{.column-body-outset}
+
+```{mermaid}
+%%| label: fig-and
+%%| fig-cap: "A logical `AND` operator."
+%%| echo: false
+
+%%{init: {"flowchart": {"htmlLabels": false}} }%%
+flowchart LR
+  I1[TRUE]
+  J1[TRUE]
+  O1[TRUE]
+
+  I2[TRUE]
+  J2[FALSE]
+  O2[FALSE]
+
+  I3[FALSE]
+  J3[FALSE]
+  O3[FALSE]
+
+  A1{{AND}}
+  A2{{AND}}
+  A3{{AND}}
+
+  I1 --> A1
+  J1 --> A1
+  A1 --> O1
+
+  I2 --> A2
+  J2 --> A2
+  A2 --> O2
+
+  I3 --> A3
+  J3 --> A3
+  A3 --> O3
+
+  style I1 fill-opacity:0, stroke-opacity:0;
+  style I2 fill-opacity:0, stroke-opacity:0;
+  style I3 fill-opacity:0, stroke-opacity:0;
+
+  style J1 fill-opacity:0, stroke-opacity:0;
+  style J2 fill-opacity:0, stroke-opacity:0;
+  style J3 fill-opacity:0, stroke-opacity:0;
+
+  style O1 fill-opacity:0, stroke-opacity:0;
+  style O2 fill-opacity:0, stroke-opacity:0;
+  style O3 fill-opacity:0, stroke-opacity:0;
+```
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+Finally, the `OR` operator takes in two binary values, and outputs a single
+binary value which is `true` if _any_ input is `true`, and `false` otherwise.
+
+:::
+
+:::{.content-visible when-format="revealjs"}
+
+## The Logical `OR` Operator
+
+:::
+
+:::{.column-body-outset}
+
+```{mermaid}
+%%| label: fig-and
+%%| fig-cap: "A logical `OR` operator."
+%%| echo: false
+%%|
+%%{init: {"flowchart": {"htmlLabels": false}} }%%
+flowchart LR
+  I1[TRUE]
+  J1[TRUE]
+  O1[TRUE]
+
+  I2[TRUE]
+  J2[FALSE]
+  O2[TRUE]
+
+  I3[FALSE]
+  J3[FALSE]
+  O3[FALSE]
+
+  A1{{OR}}
+  A2{{OR}}
+  A3{{OR}}
+
+  I1 --> A1
+  J1 --> A1
+  A1 --> O1
+
+  I2 --> A2
+  J2 --> A2
+  A2 --> O2
+
+  I3 --> A3
+  J3 --> A3
+  A3 --> O3
+
+  style I1 fill-opacity:0, stroke-opacity:0;
+  style I2 fill-opacity:0, stroke-opacity:0;
+  style I3 fill-opacity:0, stroke-opacity:0;
+
+  style J1 fill-opacity:0, stroke-opacity:0;
+  style J2 fill-opacity:0, stroke-opacity:0;
+  style J3 fill-opacity:0, stroke-opacity:0;
+
+  style O1 fill-opacity:0, stroke-opacity:0;
+  style O2 fill-opacity:0, stroke-opacity:0;
+  style O3 fill-opacity:0, stroke-opacity:0;
+```
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+#### The Point
+
+You can build **incredible** things with just three binary logical operators. As
+an example, look at the logical system described in @fig-adder. There are two
+binary inputs to this system, so there are **four** unique sets of inputs. All
+four are shown in @tbl-adder. Do you recognize the pattern? This logical system
+**adds two binary numbers**!^{Be careful not to revert back to the familiar,
+10-based method for reading values. The left-most digit in the _binary_ number
+$10$ is not the _ten's place_, it's the _two's place_; the binary number $10$ is
+**two**.}
+
+:::
+
+:::{.content-visible when-format="revealjs"}
+
+## Logical Machines
+
+:::
+
+:::{.column-body-outset}
+
+```{mermaid}
+%%| echo: false
+%%| label: fig-adder
+%%| fig-cap: "A binary logical [half-adder](https://en.wikipedia.org/wiki/Adder_(electronics)#half-adder)."
+flowchart LR
+  N1[Binary Value #1]
+  N2[Binary Value #2]
+  S1[Sum: Left Digit]
+  S2[Sum: Right Digit]
+
+  NOT1{NOT}
+  NOT2{NOT}
+  OR{{OR}}
+  AND{{AND}}
+
+  N1 --> NOT1 --> OR --> S2
+  N2 --> NOT2 --> OR
+  N1 --> AND --> S1
+  N2 --> AND
+
+  style N1 fill-opacity:0, stroke-opacity:0;
+  style N2 fill-opacity:0, stroke-opacity:0;
+  style S1 fill-opacity:0, stroke-opacity:0;
+  style S2 fill-opacity:0, stroke-opacity:0;
+
+```
+
+:::
+
+:::{.content-visible when-format="revealjs"}
+
+## Logical Machines {.unnumbered}
+
+:::
+
+| Binary Inputs | Sum (Binary) | Sum (Decimal) |
+| ------------- | ------------ | ------------- |
+| 0, 0          | 00           | 0             |
+| 0, 1          | 01           | 1             |
+| 1, 0          | 01           | 1             |
+| 1, 1          | 10           | 2             |
+
+: Truth Table for the Half Adder {#tbl-adder}
+
+:::{.content-visible unless-format="revealjs"}
+
+The "binary half-adder" is very limited: it can at most add the numbers 1 and 1
+to produce 2. Again, take this example as an _existence proof_. Can you imagine
+that, over decades, humans have combined logical half-adders to
+[add]([adds numbers](<https://en.wikipedia.org/wiki/Adder_(electronics)>))
+larger numbers? That we've defined on-paper binary logical systems which can
+[multiply](https://en.wikipedia.org/wiki/Binary_multiplier) numbers?
+[Remember](<https://en.wikipedia.org/wiki/Flip-flop_(electronics)>) numbers?
+[Select](https://en.wikipedia.org/wiki/Multiplexer) from a group of numbers? We
+have created all of these systems, and more, using only the binary logic defined
+above. By combining these systems, with exponentially increasing complexity, you
+can construct logical systems --- machines --- that are just as capable as every
+digital computer. Of course, to actually _build_ a machine, you'd need to
+implement all of this logic with some physical material; we'll discuss this
+next.
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+### Binary Machines
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+### Integrated Circuits
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+### Assembly Language
+
+:::
+
+:::{.content-visible unless-format="revealjs"}
+
+### Programming Languages
+
+:::
