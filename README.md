@@ -10,4 +10,4 @@ _My open-source website with a portfolio, blog posts, and notes!_
 ## Licenses
 
 For information about terms of use for website content and source code, see the
-[permission](/permission/index.md) page.
+[terms of use](PERMISSION).

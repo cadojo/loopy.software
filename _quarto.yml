@@ -38,7 +38,7 @@ website:
   page-footer:
     left:
       - text: "Licenses"
-        href: permission/index.md
+        href: usage/index.md
     center:
       - text: "Credits"
         href: credits/index.md
