@@ -1,0 +1,2270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>`write(loopy.software)`</title>
+<link>https://loopy.software/blog/index.html</link>
+<atom:link href="https://loopy.software/blog/index.xml" rel="self" type="application/rss+xml"/>
+<description>_Writing relating to scientific computing, astrodynamics, controls, and politics._</description>
+<image>
+<url>https://loopy.software/images/orbits.jpeg</url>
+<title>`write(loopy.software)`</title>
+<link>https://loopy.software/blog/index.html</link>
+</image>
+<generator>quarto-1.3.340</generator>
+<lastBuildDate>Sun, 11 Dec 2022 06:00:00 GMT</lastBuildDate>
+<item>
+  <title>Skip-Entry Dynamics</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/blog/posts/skipping-entry/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The content here was originally written as part of a problem set assigned in a graduate launch and entry vehicle design course at the University of Maryland. The problem statement was flawed. I believe this was deliberate — either way, the assignment was a brilliant educational tool. I’m thankful for that slight falsehood; it cemented my early understanding of spacecraft entry dynamics, and has motivated this whole post.</p>
+</div>
+</div>
+</div>
+<section id="artemis-1" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="artemis-1">Artemis 1</h2>
+<p>Go Artemis! NASA’s first Artemis mission launched successfully in the earliest hours of November 16th, 2022. Artemis 1 was an uncrewed flight <em>test</em> — the <a href="https://www.nasa.gov/exploration/systems/orion/index.html">Orion spacecraft</a> flew to the moon, arrived in a special kind of stable orbit called a <a href="https://www.nasa.gov/feature/orion-will-go-the-distance-in-retrograde-orbit-during-artemis-i"><em>Distant Retrograde Orbit</em></a>. Of course, NASA’s flight operators in Mission Control captured <a href="https://www.nasa.gov/content/artemis-1-images">stunning pictures</a> along the way. A visual overview for Artemis 1 is shown in Figure&nbsp;1.</p>
+<p>Artemis 1 is <a href="https://www.theverge.com/2022/11/29/23484571/artemis-1-halfway-record-distance">record breaking</a> through its furthest achieved distance from Earth, and through one of its most important test objectives — the first <a href="https://www.lockheedmartin.com/en-us/news/features/2022/orion-heat-shield.html">successfully test</a> of a skip-entry for a human-rated spacecraft. Orion’s heatshield was tested successfully when it entered Earth atmosphere on December 11th, 2022.</p>
+<div id="fig-a1-arch" class="quarto-figure quarto-figure-center column-page anchored" style="border-radius: 7px;">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-center" style="border-radius: 7px;">
+<figure class="figure">
+<p><img src="https://loopy.software/blog/posts/skipping-entry/https:/www.nasa.gov/sites/default/files/thumbnails/image/mission_profile_simple_artemis_i_droarticle_acrane.jpg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<figcaption class="figure-caption">Figure&nbsp;1: Artemis 1 Mission Architecture</figcaption>
+</figure>
+</div>
+</section>
+<section id="atmospheric-entry" class="level2">
+<h2 class="anchored" data-anchor-id="atmospheric-entry">Atmospheric Entry</h2>
+<p>Testing a new spacecraft’s capability to safely enter Earth’s atmosphere is incredibly important. If a spacecraft is to return to Earth in-tact, it has to survive the fall through Earth’s atmosphere. Returning spacecraft are hurtling through space at tens of thousands of miles per hour; as the spacecraft collide with air particles at high speeds, an enormous amount of heat is generated. To withstand the heat of entering a planet’s atmosphere from space, spacecraft commonly have a thick metal component which is oriented towards the atmosphere for the duration of the atmospheric entry. This metal hardware is referred to as a heat shield. Artemis 2 will fly four astronauts to a lunar orbit before returning back to Earth. A successful atmospheric entry in Artemis 1 will prove the Orion spacecraft capable of safely returning astronauts back to Earth in Artemis 2, and future Artemis missions.</p>
+<p>The <em>angle</em> of a spacecraft’s flight into Earth’s atmosphere (mostly) determines the <em>kind</em> of atmospheric entry: ballistic, lifting, or skipping. A steep entry will cause the spacecraft to <em>cannonball</em> through Earth’s atmosphere; if we model this scenario while <em>ignoring the force of gravity on the spacecraft</em>, the spacecraft’s trajectory is <em>ballistic</em>. A slightly less steep entry will allow the atmosphere to <em>lift</em> the spacecraft as it descends; this force exerted by the atmosphere on the spacecraft is similar to how airplanes fly, and this flavor of atmospheric entry is known as <em>lifting</em> entry. Finally, entering the atmosphere at a shallow angle will cause the spacecraft to <em>skip</em> across the atmosphere like a rock on a pond; this is known as a <em>skipping</em> entry.</p>
+<p>No human-rated vehicle as <em>ever</em> completed a skip-entry before Artemis 1. Orion is the first! There are <a href="https://www.lockheedmartin.com/en-us/news/features/2022/orion-skip-maneuver.html">many benefits</a> to skip-entries, including lower accelerations experienced by astronauts, more precise landing targets, and lower temperatures on the heat shield. While the benefits of skip-entries are real, all atmospheric entries are incredibly sensitive. Enter the atmosphere at too steep an angle, and the spacecraft will burn up in the atmosphere. Enter the atmosphere at too shallow an angle, and the spacecraft will skip too far and fly out into space, never to return. Rigorous calculations must be made to ensure the spacecraft is entering the atmosphere at the right angle, and the right speed. With a few simplifying assumptions, the math behind atmospheric entry can be simple enough to fit in a blog post! Don’t believe me? Read on!</p>
+</section>
+<section id="entry-dynamics" class="level2">
+<h2 class="anchored" data-anchor-id="entry-dynamics">Entry Dynamics</h2>
+<p>We can simulate the Orion spacecraft’s trajectory through the atmosphere with just a couple dozen lines of code! To build a semi-accurate model for how a spacecraft enters Earth’s atmosphere, we’ll need to simplify the problem by make some assumptions. For example, let’s completely ignore winds! We should also ignore parachutes — we will just assume parachutes deploy successfully at <em>some</em> altitude. Let’s pretend the Orion spacecraft is completely rigid by ignoring the possibility of any bending or flexing in the structure that could affect the aerodynamics throughout entry. Also, we are leaving out all considerations related to heat! No thermodynamic modeling in this post. We will assume the heat shield is capable of handling any entry we throw at it.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The word <em>model</em> might seem a bit abstract. What does a model look like? A model can be thought of as the combination of two things: simplifying assumptions, and equations which rely on the simplifying assumptions. So all we need to build a model is to list the assumptions we make, and use those assumptions to write equations. Hey! That’s only two things!</p>
+</div>
+</div>
+</div>
+<p>There are many other assumptions we’re making implicitly in this problem. While we can’t possibly list them all, let’s go into some more depth for a couple of the most important assumptions our model will rely on.</p>
+<section id="exponential-atmosphere" class="level3">
+<h3 class="anchored" data-anchor-id="exponential-atmosphere">Exponential Atmosphere</h3>
+<p>Earth’s atmosphere will exert aerodynamic forces on the Orion spacecraft. If we ignore wind, these aerodynamic forces will depend on some aerodynamic coefficients, the spacecraft’s airspeed and orientation, as well as the <em>density</em> of the atmosphere. This atmospheric density will vary with altitude! We can create a <em>very</em> simple model for Earth’s atmosphere by assuming the density decays <em>exponentially</em> as altitude increases. The core equation for <img src="https://latex.codecogs.com/png.latex?%5Crho">, the atmospheric density, will depend on altitude above sea level <img src="https://latex.codecogs.com/png.latex?h">, the atmospheric density at sea level <img src="https://latex.codecogs.com/png.latex?%5Crho_0">, and a scaling factor <img src="https://latex.codecogs.com/png.latex?h_s"> which is unique to each planet. For Earth, an accurate scaling factoris approximately equal to <img src="https://latex.codecogs.com/png.latex?7524"> meters.</p>
+<p><span id="eq-exp-atm"><img src="https://latex.codecogs.com/png.latex?%0A%5Crho%20=%20%5Crho_0%20e%5E%5Cfrac%7B-h%7D%7Bh_s%7D%0A%5Ctag%7B1%7D"></span></p>
+</section>
+<section id="aerodynamic-coefficients" class="level3">
+<h3 class="anchored" data-anchor-id="aerodynamic-coefficients">Aerodynamic Coefficients</h3>
+<p>The aerodynamic forces on Orion can be summarized by a few aerodynamic coefficients: the ballistic coefficient <img src="https://latex.codecogs.com/png.latex?%5Cbeta">, the coefficient of drag <img src="https://latex.codecogs.com/png.latex?C_D">, and the lifting coefficient <img src="https://latex.codecogs.com/png.latex?C_L">. The coefficients of lift and drag are commonly combined into one value: the <em>lift to drag ratio</em> <img src="https://latex.codecogs.com/png.latex?C_R">. For this post, one value for Orion’s <img src="https://latex.codecogs.com/png.latex?C_R"> will be assumed. The ballistic coefficient can be calculated using the vehicle’s mass, lift to drag ratio, and the surface area of the heat shield, as shown in Equation&nbsp;3.</p>
+<p><span id="eq-l-to-d"><img src="https://latex.codecogs.com/png.latex?%0AC_R%20=%20%5Cfrac%7BC_L%7D%7BC_D%7D%0A%5Ctag%7B2%7D"></span></p>
+<p><span id="eq-ballistic-coeff"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbeta%20=%20%5Cfrac%7Bm%7D%7BC_R%20A_s%7D%0A%5Ctag%7B3%7D"></span></p>
+<p>Code which calculates the ballistic coefficient, and other calculations relevant to atmospheric entry dynamics, is provided below.</p>
+<div class="cell" data-execution_count="2">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb1-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Calculate the ballistic coefficient, β.</span></span>
+<span id="cb1-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ballistic_coefficient</span>(m, Cᵣ, Aₛ) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (Cᵣ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> Aₛ)</span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb1-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Calculate the derivative of the downrange distance, ḋ.</span></span>
+<span id="cb1-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb1-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">downrange_velocity</span>(ν, γ) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ν <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cos</span>(γ)</span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb1-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Calculate the terminal velocity, vₜ.</span></span>
+<span id="cb1-13"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb1-14"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">terminal_velocity</span>(g, β, ρ, γ) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">√</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>g <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> β <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sin</span>(γ) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> ρ)</span>
+<span id="cb1-15"></span>
+<span id="cb1-16"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb1-17"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Calculate the maximum deceleration, nₘ.</span></span>
+<span id="cb1-18"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb1-19"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">maximum_deceleration</span>(vₑ, γ, hₛ, <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">e</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (vₑ<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> hₛ) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sin</span>(γ) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>e)</span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="equations-of-motion" class="level3">
+<h3 class="anchored" data-anchor-id="equations-of-motion">Equations of Motion</h3>
+<p>With all of the assumptions described above, we can write the <em>equations of motion</em> for a spacecraft as it flies through a planet’s atmosphere. The equations shown through math and code below describe how <strong>four</strong> specific values change with time as the spacecraft flies: the angle of the spacecraft’s velocity with respect to the spacecraft’s horizontal axis <img src="https://latex.codecogs.com/png.latex?%5Cgamma">, the airspeed <img src="https://latex.codecogs.com/png.latex?v">, the distance to Earth’s center <img src="https://latex.codecogs.com/png.latex?r">, and the angle of the spacecraft’s position with respect to the horizontal along the Earth’s center <img src="https://latex.codecogs.com/png.latex?%5Ctheta">. Please accept these equations as “given” for now. Check back later and there might be an expanded explanation posted as an update!</p>
+<p><span id="eq-core-eom"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%20%20%5Cdot%7B%5Cgamma%7D%20&amp;=%20%5Cfrac%7B1%7D%7Bv%7D%20%5Cleft(%20L_m%20-%20(1%20-%20%5Cfrac%7Bv%5E2%7D%7Bv_c%5E2%7D)%20g%20%5Ccos%7B%5Cgamma%7D%20%5Cright)%20%5C%5C%0A%20%20%5Cdot%7Bv%7D%20&amp;=%20-D_m%20-%20g%20%5Csin%7B%5Cgamma%7D%20%5C%5C%0A%20%20%5Cdot%7Br%7D%20&amp;=%20v%20%5Csin%7B%5Cgamma%7D%20%5C%5C%0A%20%20%5Cdot%7B%5Ctheta%7D%20&amp;=%20%5Cfrac%7Bv%7D%7Br%7D%20%5Ccos%7B%5Cgamma%7D%20%5C%5C%0A%5Cend%7Balign%7D%0A%5Ctag%7B4%7D"></span></p>
+<p>The code below defines a function, <code>CanonicalEntry</code>, which produces the equations of motion for a spacecraft’s atmospheric entry along a plane <em>in code</em>.</p>
+<div class="cell" data-execution_count="3">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">using</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">Memoize</span>: @memoize</span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">using</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">Symbolics</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">ModelingToolkit</span></span>
+<span id="cb2-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">using</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">PhysicalConstants.CODATA2018</span>: NewtonianConstantOfGravitation as G₀</span>
+<span id="cb2-4"></span>
+<span id="cb2-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb2-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Construct a model for entry dynamics.</span></span>
+<span id="cb2-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb2-8"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">@memoize</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">CanonicalEntry</span>(; name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=:</span>CanonicalEntry, simplify<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">true</span>)</span>
+<span id="cb2-9"></span>
+<span id="cb2-10">    <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">@variables</span> t</span>
+<span id="cb2-11"></span>
+<span id="cb2-12">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">@variables</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">γ</span>(t) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">v</span>(t) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">r</span>(t) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">θ</span>(t)</span>
+<span id="cb2-13">    p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">@parameters</span> r₀ ρ₀ hₛ β Cᵣ μ</span>
+<span id="cb2-14">    δ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Differential</span>(t)</span>
+<span id="cb2-15"></span>
+<span id="cb2-16">    vc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">√</span>(μ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> r)</span>
+<span id="cb2-17">    g₀ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> μ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> r₀<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-18">    g <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> g₀ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (r₀ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> r)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-19">    h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r₀</span>
+<span id="cb2-20">    ρ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ρ₀ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> hₛ)</span>
+<span id="cb2-21">    Dₘ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (ρ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> v<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> β</span>
+<span id="cb2-22">    Lₘ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Cᵣ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> Dₘ</span>
+<span id="cb2-23"></span>
+<span id="cb2-24">    eqs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [</span>
+<span id="cb2-25">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">δ</span>(γ) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> v) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (Lₘ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> vc)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> g <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cos</span>(γ)),</span>
+<span id="cb2-26">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">δ</span>(v) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>Dₘ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> g <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sin</span>(γ),</span>
+<span id="cb2-27">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">δ</span>(r) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sin</span>(γ),</span>
+<span id="cb2-28">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">δ</span>(θ) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> (v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> r) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cos</span>(γ)</span>
+<span id="cb2-29">    ]</span>
+<span id="cb2-30"></span>
+<span id="cb2-31">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> simplify</span>
+<span id="cb2-32">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map!</span>(ModelingToolkit.simplify, eqs, eqs)</span>
+<span id="cb2-33">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb2-34"></span>
+<span id="cb2-35">    model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ODESystem</span>(</span>
+<span id="cb2-36">        eqs, t; name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>name</span>
+<span id="cb2-37">    )</span>
+<span id="cb2-38"></span>
+<span id="cb2-39">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> model</span>
+<span id="cb2-40"></span>
+<span id="cb2-41"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span></code></pre></div>
+</details>
+</div>
+<p>Calling <code>CanonicalEntry</code> produces a model object, which we can inspect for the equations of motion written mathematically. This expands all of the equations; the output looks a lot more complicated than Equation&nbsp;4! Thank goodness for computers.</p>
+<div class="cell" data-execution_count="4">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1">model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">CanonicalEntry</span>()</span>
+<span id="cb3-2">model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> equations <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.|&gt;</span> ModelingToolkit.simplify</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<p><img src="https://latex.codecogs.com/png.latex?%20%5Cbegin%7Balign%7D%0A%5Cfrac%7B%5Cmathrm%7Bd%7D%20%5Cgamma%5Cleft(%20t%20%5Cright)%7D%7B%5Cmathrm%7Bd%7Dt%7D%20=&amp;%20%5Cfrac%7B2%20%5Cleft(%20%5Csqrt%7B%5Cfrac%7B%5Cmu%7D%7Br%5Cleft(%20t%20%5Cright)%7D%7D%20%5Cright)%5E%7B2%7D%20%5Cleft(%20r%5Cleft(%20t%20%5Cright)%20%5Cright)%5E%7B2%7D%20C_r%20%5Cbeta%20+%20%5Cleft(%20v%5Cleft(%20t%20%5Cright)%20%5Cright)%5E%7B4%7D%20%5Cmu%20%5Crho_0%20e%5E%7B%5Cfrac%7Br_0%20-%20r%5Cleft(%20t%20%5Cright)%7D%7Bh_s%7D%7D%20%5Ccos%5Cleft(%20%5Cgamma%5Cleft(%20t%20%5Cright)%20%5Cright)%20-%20%5Cleft(%20%5Csqrt%7B%5Cfrac%7B%5Cmu%7D%7Br%5Cleft(%20t%20%5Cright)%7D%7D%20%5Cright)%5E%7B2%7D%20%5Cleft(%20v%5Cleft(%20t%20%5Cright)%20%5Cright)%5E%7B2%7D%20%5Cmu%20%5Crho_0%20e%5E%7B%5Cfrac%7Br_0%20-%20r%5Cleft(%20t%20%5Cright)%7D%7Bh_s%7D%7D%20%5Ccos%5Cleft(%20%5Cgamma%5Cleft(%20t%20%5Cright)%20%5Cright)%7D%7B%5Cleft(%20%5Csqrt%7B%5Cfrac%7B%5Cmu%7D%7Br%5Cleft(%20t%20%5Cright)%7D%7D%20%5Cright)%5E%7B2%7D%20%5Cleft(%20v%5Cleft(%20t%20%5Cright)%20%5Cright)%5E%7B3%7D%20%5Cleft(%20r%5Cleft(%20t%20%5Cright)%20%5Cright)%5E%7B2%7D%20%5Crho_0%20e%5E%7B%5Cfrac%7Br_0%20-%20r%5Cleft(%20t%20%5Cright)%7D%7Bh_s%7D%7D%7D%20%5C%5C%0A%5Cfrac%7B%5Cmathrm%7Bd%7D%20v%5Cleft(%20t%20%5Cright)%7D%7B%5Cmathrm%7Bd%7Dt%7D%20=&amp;%20%5Cfrac%7B%20-%20%5Cbeta%20%5Cmu%20%5Csin%5Cleft(%20%5Cgamma%5Cleft(%20t%20%5Cright)%20%5Cright)%20-%20%5Cfrac%7B1%7D%7B2%7D%20%5Cleft(%20v%5Cleft(%20t%20%5Cright)%20%5Cright)%5E%7B2%7D%20%5Cleft(%20r%5Cleft(%20t%20%5Cright)%20%5Cright)%5E%7B2%7D%20%5Crho_0%20e%5E%7B%5Cfrac%7Br_0%20-%20r%5Cleft(%20t%20%5Cright)%7D%7Bh_s%7D%7D%7D%7B%5Cleft(%20r%5Cleft(%20t%20%5Cright)%20%5Cright)%5E%7B2%7D%20%5Cbeta%7D%20%5C%5C%0A%5Cfrac%7B%5Cmathrm%7Bd%7D%20r%5Cleft(%20t%20%5Cright)%7D%7B%5Cmathrm%7Bd%7Dt%7D%20=&amp;%20v%5Cleft(%20t%20%5Cright)%20%5Csin%5Cleft(%20%5Cgamma%5Cleft(%20t%20%5Cright)%20%5Cright)%20%5C%5C%0A%5Cfrac%7B%5Cmathrm%7Bd%7D%20%5Ctheta%5Cleft(%20t%20%5Cright)%7D%7B%5Cmathrm%7Bd%7Dt%7D%20=&amp;%20%5Cfrac%7Bv%5Cleft(%20t%20%5Cright)%20%5Ccos%5Cleft(%20%5Cgamma%5Cleft(%20t%20%5Cright)%20%5Cright)%7D%7Br%5Cleft(%20t%20%5Cright)%7D%0A%5Cend%7Balign%7D%0A"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="simulated-skip-entry" class="level2">
+<h2 class="anchored" data-anchor-id="simulated-skip-entry">Simulated Skip-Entry</h2>
+<section id="backstory" class="level3">
+<h3 class="anchored" data-anchor-id="backstory">Backstory</h3>
+<p>In 2020, I took a graduate Launch &amp; Entry Vehicle Design course at the University of Maryland. The course was taught by <a href="spacecraft.ssl.umd.edu">Dr.&nbsp;Akin</a>, and one of our homework assignments was to simulate a <em>lifting entry</em> for the Orion spacecraft. One of my classmates and I easily spent 20+ hours trying to make the simulation work, but no matter what we tried, the simulated entry did not seem to be a lifting entry. We turned in the assignment the day it was due, and hoped for grading mercy — which we received, thankfully! Dr.&nbsp;Akin apologized when we turned it in — he had <em>said</em> lifting entry, but really the initial conditions he gave us instead produced a <em>skip</em> entry! I forgot all about this for months, until I reviewed recorded lecture videos from a previous year of the course while preparing for an exam. I came across a lecture from years earlier, where my professor gave <em>the same apology</em> to <em>that</em> class!</p>
+<p>I don’t mean to make any accusations, but I suspect that mix-up was intentional! Regardless of the intent, the effect was brilliant. I’ve never forgotten those couple of lectures introducing atmospheric entry. Plus, the assignment motivated a fun blog post!</p>
+</section>
+<section id="initial-conditions" class="level3">
+<h3 class="anchored" data-anchor-id="initial-conditions">Initial Conditions</h3>
+<p>To simulate Orion’s skip-entry, we need initial conditions. Let’s assume the initial conditions provided in Table&nbsp;1. We can “plug” these conditions into the dynamics described previously to simulate an atmospheric skipping entry!</p>
+<div id="tbl-ic" class="anchored">
+<table class="table">
+<caption>Table&nbsp;1: Initial Conditions for Skip Entry</caption>
+<colgroup>
+<col style="width: 10%">
+<col style="width: 32%">
+<col style="width: 25%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Description</th>
+<th>Value</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?m"></td>
+<td>Orion Mass</td>
+<td><img src="https://latex.codecogs.com/png.latex?10,400"></td>
+<td>kilograms</td>
+</tr>
+<tr class="even">
+<td><img src="https://latex.codecogs.com/png.latex?A_s"></td>
+<td>Heatshield Surface Area</td>
+<td><img src="https://latex.codecogs.com/png.latex?19.635"></td>
+<td>square meters</td>
+</tr>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?C_R"></td>
+<td>Lift to Drag Ratio</td>
+<td><img src="https://latex.codecogs.com/png.latex?0.25"></td>
+<td>meter squared per quartic second</td>
+</tr>
+<tr class="even">
+<td><img src="https://latex.codecogs.com/png.latex?%5Cbeta"></td>
+<td>Ballistic Coefficient</td>
+<td><img src="https://latex.codecogs.com/png.latex?441.39"></td>
+<td>kilograms per meter squared</td>
+</tr>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?%5Crho_0"></td>
+<td>Atmospheric Density at Sea Level</td>
+<td><img src="https://latex.codecogs.com/png.latex?1.226"></td>
+<td>kilograms per meter cubed</td>
+</tr>
+<tr class="even">
+<td><img src="https://latex.codecogs.com/png.latex?h_s"></td>
+<td>Atmospheric Scaling Factor</td>
+<td><img src="https://latex.codecogs.com/png.latex?7524"></td>
+<td>meters</td>
+</tr>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?%5Cmu"></td>
+<td>Earth’s Mass Parameter</td>
+<td><img src="https://latex.codecogs.com/png.latex?3.986%20%5Ctimes%2010%5E14"></td>
+<td>meters per second cubed</td>
+</tr>
+<tr class="even">
+<td><img src="https://latex.codecogs.com/png.latex?r_0"></td>
+<td>Earth’s Radius</td>
+<td><img src="https://latex.codecogs.com/png.latex?6378"></td>
+<td>kilometers</td>
+</tr>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?%5Cgamma"></td>
+<td>Entry Flight Path Angle</td>
+<td><img src="https://latex.codecogs.com/png.latex?-5%5E%5Ccirc"></td>
+<td>degrees</td>
+</tr>
+<tr class="even">
+<td><img src="https://latex.codecogs.com/png.latex?v"></td>
+<td>Entry Velocity</td>
+<td><img src="https://latex.codecogs.com/png.latex?8.939"></td>
+<td>kilometers per second</td>
+</tr>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?r"></td>
+<td>Entry Radius</td>
+<td><img src="https://latex.codecogs.com/png.latex?6500.1"></td>
+<td>kilometers</td>
+</tr>
+<tr class="even">
+<td><img src="https://latex.codecogs.com/png.latex?%5Ctheta"></td>
+<td>Entry Angular Position</td>
+<td><img src="https://latex.codecogs.com/png.latex?349.3%5E%5Ccirc"></td>
+<td>degrees</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>An earlier version of this post used a flight path angle of <img src="https://latex.codecogs.com/png.latex?-2.5%5E%5Ccirc">. This was the value assigned for the problem set, and it produced results which were highly sensitive to solver tolerances. Setting the absolute and relative tolerances below <code>1e-9</code> caused the spacecraft to “skip” for over one full day! The current flight path angle value, <img src="https://latex.codecogs.com/png.latex?-5%5E%5Ccirc">, produces plots which better represent atmospheric skip-entry dynamics.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="simulation" class="level3">
+<h3 class="anchored" data-anchor-id="simulation">Simulation</h3>
+<p>Finally — let’s simulate Orion’s entry into Earth’s atmosphere!</p>
+<div class="cell" data-execution_count="5">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">using</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">Plots</span></span>
+<span id="cb4-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">using</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">Unitful</span></span>
+<span id="cb4-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">using</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">DifferentialEquations</span></span>
+<span id="cb4-4"></span>
+<span id="cb4-5">time <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NaN</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># the time does not matter!</span></span>
+<span id="cb4-6"></span>
+<span id="cb4-7">m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10.4e3</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"kg"</span></span>
+<span id="cb4-8">A <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19.635</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"m^2"</span></span>
+<span id="cb4-9">C <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.25</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"m^2/s^4"</span></span>
+<span id="cb4-10">β <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">441.39</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"kg/m^2"</span></span>
+<span id="cb4-11">ρ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.226</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"kg/m^3"</span></span>
+<span id="cb4-12">h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7524.0</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"m"</span></span>
+<span id="cb4-13">μ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3.986e14</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"m^3/s^2"</span></span>
+<span id="cb4-14">R <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6378</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"km"</span></span>
+<span id="cb4-15">γ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5.0</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"°"</span></span>
+<span id="cb4-16">v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8.939</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"km/s"</span></span>
+<span id="cb4-17">r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6500.1</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"km"</span></span>
+<span id="cb4-18">θ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">349.3</span>u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"°"</span></span>
+<span id="cb4-19"></span>
+<span id="cb4-20">states <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">@nonamespace</span> [</span>
+<span id="cb4-21">    model.γ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(γ)),</span>
+<span id="cb4-22">    model.v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(v)),</span>
+<span id="cb4-23">    model.r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(r)),</span>
+<span id="cb4-24">    model.θ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(θ)),</span>
+<span id="cb4-25">]</span>
+<span id="cb4-26"></span>
+<span id="cb4-27">parameters <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">@nonamespace</span> [</span>
+<span id="cb4-28">    model.Cᵣ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(C)),</span>
+<span id="cb4-29">    model.r₀ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(R)),</span>
+<span id="cb4-30">    model.hₛ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(h)),</span>
+<span id="cb4-31">    model.μ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(μ)),</span>
+<span id="cb4-32">    model.ρ₀ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(ρ)),</span>
+<span id="cb4-33">    model.β <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(β)),</span>
+<span id="cb4-34">]</span>
+<span id="cb4-35"></span>
+<span id="cb4-36"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sealevel</span>(u, t, integrator) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> u[<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">upreferred</span>(R))</span>
+<span id="cb4-37">impact <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ContinuousCallback</span>(sealevel, terminate!)</span>
+<span id="cb4-38"></span>
+<span id="cb4-39">timespan <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">24</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>)</span>
+<span id="cb4-40">problem <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ODEProblem</span>(model, states, timespan, parameters)</span>
+<span id="cb4-41"></span>
+<span id="cb4-42">trajectory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">solve</span>(problem; callback<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>impact, abstol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-14</span>, reltol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-14</span>)</span></code></pre></div>
+</details>
+</div>
+<p>Let’s plot the spacecraft’s altitude across time. Do you see the altitude jump before Orion finally descends to the Earth’s surface? That’s the spacecraft skipping across the atmosphere — just like a rock skips across a pond, if the rock was moving at tens of thousands of miles per hour.</p>
+<div class="cell" data-fig-label="fig-linear-altitude" data-execution_count="6">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1">altitude <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(</span>
+<span id="cb5-2">    u <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ustrip</span>(u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"km"</span>, u[<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> u<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"m"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> R),</span>
+<span id="cb5-3">    trajectory.u,</span>
+<span id="cb5-4">)</span>
+<span id="cb5-5"></span>
+<span id="cb5-6">linear <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(</span>
+<span id="cb5-7">    trajectory.t, altitude;</span>
+<span id="cb5-8">    title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Orion's Altitude Throughout (Re)Entry"</span>,</span>
+<span id="cb5-9">    label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"h(t)"</span>,</span>
+<span id="cb5-10">    xlabel<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Time (seconds)"</span>,</span>
+<span id="cb5-11">    ylabel<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Altitude (km)"</span></span>
+<span id="cb5-12">)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://loopy.software/blog/posts/skipping-entry/index_files/figure-html/cell-7-output-1.svg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Spacecraft Altitude Across Time</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can also plot the altitude alongside the angle of the spacecraft’s trajectory with respect to an arbitrary horizontal axis across Eath. The result depicts the spacecraft’s orbit about Earth!</p>
+<div class="cell" data-fig-label="fig-polar-altitude" data-execution_count="7">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1">angle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(</span>
+<span id="cb6-2">    u <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rad2deg</span>(u[<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>]),</span>
+<span id="cb6-3">    trajectory.u,</span>
+<span id="cb6-4">)</span>
+<span id="cb6-5"></span>
+<span id="cb6-6">polar <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(</span>
+<span id="cb6-7">    angle, altitude;</span>
+<span id="cb6-8">    proj<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=:</span>polar,</span>
+<span id="cb6-9">    title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Orion's Orbit About Earth"</span>,</span>
+<span id="cb6-10">    label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"h(t)"</span>,</span>
+<span id="cb6-11">    xlabel<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Time (seconds)"</span>,</span>
+<span id="cb6-12">    ylabel<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Altitude (km)"</span></span>
+<span id="cb6-13">)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://loopy.software/blog/posts/skipping-entry/index_files/figure-html/cell-8-output-1.svg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Spacecraft Altitude Across Angular Position</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This is a really fun exercise. By breaking the problem down to first-principles, we can predict the behavior of a really complicated system. Thanks to Dr.&nbsp;Akin for assigning this problem over two years ago, and thanks to my friend and classmate Kate for banging her head against the wall with me to figure this out. Finally, thanks to you for reading!</p>
+
+
+<!-- -->
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Julia</category>
+  <category>Dynamics</category>
+  <category>Space</category>
+  <category>Technical</category>
+  <guid>https://loopy.software/blog/posts/skipping-entry/index.html</guid>
+  <pubDate>Sun, 11 Dec 2022 06:00:00 GMT</pubDate>
+  <media:content url="https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/fd2_opnav_art001e000013_orig.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Wrongful Partisanship</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/blog/posts/wrongful-partisanship/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This article is my opinion and response to HPD action at the Harris County Commissioners Court on October 11th, 2022. See Jen Rice’s <a href="https://www.houstonchronicle.com/politics/houston/article/At-Harris-County-Commissioners-Court-budget-17502354.php">article</a> outlining the timing of events. <a href="images/police-halls.jpeg">Banner image</a> credits to <a href="https://twitter.com/jen_rice_/status/1579863310685851650?s=20&amp;t=ERT1WOCBfAciLdWxTB_-TA">Jen Rice</a> and the Houston Chronicle.</p>
+</div>
+</div>
+</div>
+<p>Resources paid for by taxpayers should not be used as props for a partisan political stunt. The Houston Police Department (HPD) actions taken at the Harris County Commissioners Court on October 11th were wrong. Harris County taxpayers deserve to know how this event was planned, and the organizers and attendees within HPD who used government resources for partisan political gain should be held accountable.</p>
+<p>The line between personal and professional actions may sometimes appear thin. For governments, extra care must be taken to prevent even the <em>appearance</em> of impropriety. As a result, government employees have more to consider when planning political action, relative to other Americans. If an employee of the Federal Bureau of Investigation wears an FBI baseball cap while they attend a political rally in a personal capacity, might they appear to be representing the agency? If Environmental Protection Agency employees use their government email accounts to organize a sit-in on the steps of the Supreme Court in protest of decisions relating to climate change, are they violating federal regulations? In my understanding, the answer to both of these questions is: yes.</p>
+<p>The <a href="https://osc.gov/services/pages/hatchact-statelocal.aspx">laws and regulations</a> which relate to the previous two examples are not superfluous. They help us — as a nation — walk that line between protecting the autonomy and rights of individuals, and trusting the institutions we’ve assiged with running our society. The spirit behind these guardrails is important. <em>These rules protect <em>you</em> from the government</em>. This is what it means to live in a country of laws. I am proud to live in a place which takes care to protect the independence of the institutions assigned with service to the public.</p>
+<p>The actions taken by HPD officers at the Harris County Commissioner Court on October 11th were not nuanced, or anywhere close to the “ethical line”. Officers in official uniforms brought <a href="https://twitter.com/jen_rice_/status/1579863310685851650?s=20">K-9 units</a> and <a href="https://www.houstonchronicle.com/politics/houston/article/Harris-County-budget-live-updates-Police-presence-17501166.php">weapons</a> into the halls of the Commissioner Court. They <a href="https://www.houstonchronicle.com/politics/houston/article/At-Harris-County-Commissioners-Court-budget-17502354.php">boo’d</a> the commissioners as the meeting adjourned. They posed for a <a href="https://www.houstonchronicle.com/politics/houston/article/Harris-County-budget-live-updates-Police-presence-17501166.php">picture</a> with a banner that read: STOP DEFUNDING.</p>
+<p>To me, the implicit intimidation on display by HPD officers against elected officials is chilling, and the political action predicated on a falsehood — the <a href="https://www.houstonchronicle.com/opinion/editorials/article/Editorial-Now-Republicans-are-defunding-police-17464442.php">falsehood</a> that Harris County officials have proposed defunding law enforcement — is cynical and condescending toward all voters. That latter point is, to me, worsened by the fact that the officers <em>have to know</em> that their funding is not in jeopardy; this necessarily means their actions at the Court were in furtherance of a politically expedient <em>lie</em>. Still, I understand that for Houston residents who are wary of national calls to re-allocate police funding, the rule-bending by HPD at the Court may feel like a small price to pay for a dramatic and public display of support for law enforcement funding. To those readers, I say this: no matter the issue, we cannot allow publicly funded apolitical institutions to participate in partisan politics. To let HPD off the hook for their misuse of taxpayer dollars is to fail to provide the guardrails necessary for all Americans to have faith in the institutions sworn to their service.</p>
+
+
+<!-- -->
+
+
+ ]]></description>
+  <category>Law</category>
+  <category>Politics</category>
+  <category>Houston</category>
+  <guid>https://loopy.software/blog/posts/wrongful-partisanship/index.html</guid>
+  <pubDate>Mon, 17 Oct 2022 05:00:00 GMT</pubDate>
+  <media:content url="https://loopy.software/blog/posts/wrongful-partisanship/images/police-halls.jpeg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Module Hygiene in Python</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/blog/posts/python-module-hygiene/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This is gonna get pretty opinionated! I want to say this upfront: I’m no Python expert. If I got something wrong, please leave a comment, send an email, or otherwise let me know!</p>
+</div>
+</div>
+</div>
+<section id="python-namespaces" class="level2">
+<h2 class="anchored" data-anchor-id="python-namespaces">Python Namespaces</h2>
+<p>Ask yourself the following question: where in a Python program can you store variables which are distinct from the rest of your program? As you think of answers to this question, you can loosely think about anything in Python which is dot-accessible, e.g.&nbsp;<code>&lt;something&gt;.attribute</code>; in this example, <code>&lt;something&gt;</code> is functioning as a <em>namespace</em>.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition: <em>namespace</em>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In computer programming, a namespace refers to some element of a program which separates named variables from the rest of the program.</p>
+</div>
+</div>
+<p>There are plenty of examples of namespaces in Python: modules, classes, class instances, etc. In fact, all of those examples are <code>object</code> instances in Python! Each assertion made in the code below evaluates to <code>True</code>.</p>
+<div class="cell" data-execution_count="1">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Modules are objects!</span></span>
+<span id="cb1-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">assert</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">isinstance</span>(__builtins__, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">object</span>) </span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Classes are objects!</span></span>
+<span id="cb1-5"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">assert</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">isinstance</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">object</span>)</span>
+<span id="cb1-6"></span>
+<span id="cb1-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Class instances are objects!</span></span>
+<span id="cb1-8"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">assert</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">isinstance</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">object</span>)</span></code></pre></div>
+</details>
+</div>
+<p>For the remainder of this post, let’s focus on Python <em>modules</em> specifically. <strong>We can and should do more to make Python modules sparse!</strong></p>
+</section>
+<section id="python-modules" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="python-modules">Python Modules</h2>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition: <em>module</em>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In computer programming, modules are explicit namespace declarations which provide separate <em>compartments</em> in your program where variable names are distinct. A new variable declared in one module is different than a new variable declared in another module, even if those variables have the same name!</p>
+</div>
+</div>
+<div class="page-columns page-full"><p>In Python, modules are defined by <code>.py</code> files. There’s no easily supported way to create modules dynamically, though that would make for a nice future post! You need to write your module’s contents to a <code>.py</code> file, make that file available on <code>sys.path</code>, and then load that module, i.e.&nbsp;with an <code>import</code> statement. The <code>sys.path</code> variable is where Python will look for the name <code>something</code> when you type <code>import something</code>. </p><div class="no-row-height column-margin column-container"><span class="">You can check this path yourself! Try <code>import sys; print(sys.path)</code> sometime.</span></div></div>
+</section>
+<section id="two-categories-of-dependencies" class="level2">
+<h2 class="anchored" data-anchor-id="two-categories-of-dependencies">Two Categories of Dependencies</h2>
+<p>I’d like to define two terms before we continue: import-time, and usage-time. Import-time refers to the moment when a module is first loaded; the module is executed just as if you pasted each line into a Python interpreter. Usage-time refers to all subsequent usage of a Python module.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># import time</span></span>
+<span id="cb2-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(numpy.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># usage time</span></span></code></pre></div>
+<p>This distinction will be important for the module hygiene recipe described later! Python developers commonly load import-time and usage-time dependencies at the top of their modules. If you instead separate import-time and usage-time dependencies, you can safely remove all import-time dependencies from your module’s namespace!</p>
+</section>
+<section id="module-example-coordinates.py" class="level2">
+<h2 class="anchored" data-anchor-id="module-example-coordinates.py">Module Example: <code>coordinates.py</code></h2>
+<p>Let’s pretend the code block below is placed in a file called <code>coordinates.py</code>. If this file is in a directory found in <code>sys.path</code>, then you have access to a module titled <code>coordinates</code>! Everything defined in <code>coordinates.py</code> will be available to you, even variables defined with leading underscores.</p>
+<p>In your new module, <code>coordinates</code>, we’ll bring in some math functions from <code>numpy</code>, define a public-facing function for users of our module, and define some temporarily necessary variables. As you read through, try to find the variables which are only temporarily necessary!</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Once the full module is loaded, do we really need any of the typing variables anymore?</p>
+</div>
+</div>
+<div class="cell" data-execution_count="2">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb3-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">Pretend this is the contents of a new Python module, </span></span>
+<span id="cb3-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"coordinates.py". This module provides common coordinate </span></span>
+<span id="cb3-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">transformations for you!</span></span>
+<span id="cb3-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb3-6"></span>
+<span id="cb3-7"></span>
+<span id="cb3-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#</span></span>
+<span id="cb3-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># First, let's define some types to help us </span></span>
+<span id="cb3-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># write declaritive &amp; modern Python code!</span></span>
+<span id="cb3-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#</span></span>
+<span id="cb3-12"></span>
+<span id="cb3-13">Real <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span> </span>
+<span id="cb3-14"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> NamedTuple</span>
+<span id="cb3-15"></span>
+<span id="cb3-16"></span>
+<span id="cb3-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#</span></span>
+<span id="cb3-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We'll also need some math functions from numpy. </span></span>
+<span id="cb3-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We could use Python's built-in `abs`, `sqrt`, </span></span>
+<span id="cb3-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># `sin`, and `cos` functions, but numpy's versions </span></span>
+<span id="cb3-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># will have better performance.</span></span>
+<span id="cb3-22"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#</span></span>
+<span id="cb3-23"></span>
+<span id="cb3-24"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> arctan2 <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> atan2, sqrt, cos, sin</span>
+<span id="cb3-25"></span>
+<span id="cb3-26"></span>
+<span id="cb3-27"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#</span></span>
+<span id="cb3-28"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Finally, my favorite Python package: plum-dispatch. </span></span>
+<span id="cb3-29"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># It provides Julia-like type dispatching to Python! </span></span>
+<span id="cb3-30"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Of course, you take a performance hit, but look at </span></span>
+<span id="cb3-31"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># how clean the code below is! 🤩</span></span>
+<span id="cb3-32"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#</span></span>
+<span id="cb3-33"></span>
+<span id="cb3-34"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> plum <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dispatch</span>
+<span id="cb3-35"></span>
+<span id="cb3-36"></span>
+<span id="cb3-37"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#</span></span>
+<span id="cb3-38"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Now that we have the setup out of the way, let's </span></span>
+<span id="cb3-39"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># add some functionality!</span></span>
+<span id="cb3-40"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#</span></span>
+<span id="cb3-41"></span>
+<span id="cb3-42"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Rectangular(NamedTuple):</span>
+<span id="cb3-43">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb3-44"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Defines a two-dimensional rectangular coordinate.</span></span>
+<span id="cb3-45"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb3-46">    x: Real</span>
+<span id="cb3-47">    y: Real</span>
+<span id="cb3-48"></span>
+<span id="cb3-49"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Polar(NamedTuple):</span>
+<span id="cb3-50">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb3-51"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Defines a two-dimensional polar coordinate.</span></span>
+<span id="cb3-52"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb3-53">    r: Real</span>
+<span id="cb3-54">    θ: Real</span>
+<span id="cb3-55"></span>
+<span id="cb3-56"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dispatch</span></span>
+<span id="cb3-57"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> rectangular(coordinate: Rectangular) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> Rectangular:</span>
+<span id="cb3-58">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> coordinate</span>
+<span id="cb3-59"></span>
+<span id="cb3-60"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dispatch</span></span>
+<span id="cb3-61"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> rectangular(coordinate: Polar) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> Rectangular:</span>
+<span id="cb3-62">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> Rectangular(</span>
+<span id="cb3-63">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> coordinate.r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> cos(coordinate.θ),</span>
+<span id="cb3-64">        y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> coordinate.r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> sin(coordinate.θ),</span>
+<span id="cb3-65">    )</span>
+<span id="cb3-66"></span>
+<span id="cb3-67"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dispatch</span></span>
+<span id="cb3-68"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> polar(coordinate: Rectangular) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> Polar:</span>
+<span id="cb3-69">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> Polar(</span>
+<span id="cb3-70">        r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sqrt(coordinate.x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> coordinate.y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>),</span>
+<span id="cb3-71">        θ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> atan2(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>coordinate.y, coordinate.x),</span>
+<span id="cb3-72">    )</span>
+<span id="cb3-73"></span>
+<span id="cb3-74"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dispatch</span></span>
+<span id="cb3-75"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> polar(coordinate: Polar) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> Polar:</span>
+<span id="cb3-76">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> coordinate</span></code></pre></div>
+</details>
+</div>
+<p>Now if you load <code>coordinates.py</code> using <code>import coordinates</code>, and then you inspect the contents of the module, what will you find? You’ll certaintly find names which are the purpose of the package, such as the <code>Rectangular</code> and <code>Polar</code>, and the <code>rectangular</code> and <code>polar</code> methods. Unfortunately, you’ll also find a lot of names you aren’t intended to use: <code>Real</code>, <code>NamedTuple</code>, <code>atan2</code>, <code>sqrt</code>, <code>cos</code>, <code>sin</code>, and <code>dispatch</code>.</p>
+<p>Most Python developers just ignore all of those names, and that is absolutely fine. Personally, as I write Python code, these extra names irk me a bit; why am I providing names which I never intend for my users to use?</p>
+</section>
+<section id="module-cleanup-recipe" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="module-cleanup-recipe">Module Cleanup Recipe</h2>
+<p>We can get rid of the extraneous names in our modules by simply calling <code>del</code> on each unwanted name at the end of our module files. If this pattern is used, users will be able to programatically check for your public API by reading the contents of <code>yourmodule.__export__</code>, and IDE tab-completion won’t show any private names.</p>
+<p>This pattern comes in three steps: define names which you intend to keep, write the primary contents of your module, and delete all unwanted names at the end of your module. There’s one additional concept you’ll need to keep in mind: you can no longer follow the common Python practice of importing usage-time dependencies at the top-level of your module! Instead, you can do so at the beginning of each function definition.</p>
+<p>Sound weird? Fear not! The rest of this post walks through this pattern in detail, and provides a bit more information which can help you determine if this pattern is useful for you.</p>
+<section id="define-exported-names" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="define-exported-names">Define Exported Names</h3>
+<div class="page-columns page-full"><p>Rust specifies elements of a public API by using the keyword <code>pub</code>. Julia specifies exported names with the keyword <code>export</code>. Python can provide the means to accomplish (practically) the same thing! (Let’s decide to define an <code>__export__</code>variable in all of our Python modules.) This <code>__export__</code> variable should be some kind <code>str</code> collection, like a <code>list</code>, <code>tuple</code>, <code>set</code>, or any other <code>Iterable</code> type. Personally, I like using the <code>set</code> type because it feels most in keeping with the <em>spirit</em> of an exported names collection; names can’t be repeated, and order doesn’t matter!</p><div class="no-row-height column-margin column-container"><span class="">This rule also applies to packages and subpackages because they are also Python modules!</span></div></div>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">__export__ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {</span>
+<span id="cb4-2">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rectangular"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Polar"</span>,</span>
+<span id="cb4-3">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rectangular"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"polar"</span>,</span>
+<span id="cb4-4">}</span></code></pre></div>
+</section>
+<section id="import-temporary-names" class="level3">
+<h3 class="anchored" data-anchor-id="import-temporary-names">Import Temporary Names</h3>
+<p>With this <code>__export__</code> collection defined, we can safely include <em>any</em> temporary names we want, just as we normally would. This commonly includes types defined in the built-in <code>typing</code> package. Import all of the temporary functionality you need, and don’t worry about polluting your module’s namespace; we’ll clean up this namespace soon!</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">Real <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span></span>
+<span id="cb5-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> NamedTuple</span>
+<span id="cb5-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> plum <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dispatch</span></code></pre></div>
+</section>
+<section id="implement-the-public-api" class="level3">
+<h3 class="anchored" data-anchor-id="implement-the-public-api">Implement the Public API</h3>
+<p>You have the temporary names you need to add proper typing and import-time functionality to your public API. Let’s actually write the API! This is equivalent to all of your exported names, as declared above in <code>__export__</code>.</p>
+<p>Note that, so far, we have only imported the import-time dependencies. We can’t import our usage-time dependencies in our module without adding them to <code>__export__</code>; otherwise, our module will throw a <code>NameError</code> as it attempts to reference previously deleted names!</p>
+<p>For example, if we write <code>from numpy import sin, cos</code> in our top-level module, and then delete <code>sin</code> and <code>cos</code> at the end of the module, all code which relies on <code>sin</code> and <code>cos</code> at usage-time will be calling undefined functions! Rather than throw all of our usage-time dependencies into <code>__export__</code>, we can simply add them to our function definitions. If you’re worried that those imports will be loaded every time you call the function, don’t! Each <code>import</code> statement within a function is <strong>only</strong> evaluated <strong>the first time</strong> you call the function.</p>
+<div class="cell" data-execution_count="3">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Rectangular(NamedTuple):</span>
+<span id="cb6-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb6-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Defines a two-dimensional rectangular coordinate.</span></span>
+<span id="cb6-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb6-5">    x: Real</span>
+<span id="cb6-6">    y: Real</span>
+<span id="cb6-7"></span>
+<span id="cb6-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Polar(NamedTuple):</span>
+<span id="cb6-9">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb6-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Defines a two-dimensional polar coordinate.</span></span>
+<span id="cb6-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb6-12">    r: Real</span>
+<span id="cb6-13">    θ: Real</span>
+<span id="cb6-14"></span>
+<span id="cb6-15"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dispatch</span></span>
+<span id="cb6-16"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> rectangular(coordinate: Rectangular) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> Rectangular:</span>
+<span id="cb6-17">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> coordinate</span>
+<span id="cb6-18"></span>
+<span id="cb6-19"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dispatch</span></span>
+<span id="cb6-20"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> rectangular(coordinate: Polar) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> Rectangular:</span>
+<span id="cb6-21">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We've moved this import from the top-level module to within this function! </span></span>
+<span id="cb6-22">    <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> sin, cos </span>
+<span id="cb6-23">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> Rectangular(</span>
+<span id="cb6-24">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> coordinate.r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> cos(coordinate.θ),</span>
+<span id="cb6-25">        y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> coordinate.r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> sin(coordinate.θ),</span>
+<span id="cb6-26">    )</span>
+<span id="cb6-27"></span>
+<span id="cb6-28"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dispatch</span></span>
+<span id="cb6-29"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> polar(coordinate: Rectangular) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> Polar:</span>
+<span id="cb6-30">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We've moved this import from the top-level module to within this function! </span></span>
+<span id="cb6-31">    <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> sqrt, arctan2 <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> atan2</span>
+<span id="cb6-32">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> Polar(</span>
+<span id="cb6-33">        r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sqrt(coordinate.x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> coordinate.y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>),</span>
+<span id="cb6-34">        θ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> atan2(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>coordinate.y, coordinate.x),</span>
+<span id="cb6-35">    )</span>
+<span id="cb6-36"></span>
+<span id="cb6-37"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dispatch</span></span>
+<span id="cb6-38"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> polar(coordinate: Polar) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> Polar:</span>
+<span id="cb6-39">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> coordinate</span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="delete-private-names" class="level3">
+<h3 class="anchored" data-anchor-id="delete-private-names">Delete Private Names</h3>
+<p>Now your module definition is coming to a close! You’re done implementing all of the features of your project, and you’re about to type <code>if __name__ == "__main__"</code>. What I’m proposing, with this whole blog post, is this: don’t stop there! Add an <code>else</code> condition to that <code>if</code> statement!</p>
+<p>If your module is not the top-level program (known as “<strong>main</strong>”), then you should clean up all of your non-exported names with the pattern below! You need to put this pattern under an <code>else</code> condition (or a <code>__name__ != "__main__"</code> condition) because Python interpreters, like <code>IPython</code>, stick “magic” global variables in the top-level namespace. You don’t want to delete those!</p>
+<div class="cell" data-execution_count="4">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"__main__"</span>:</span>
+<span id="cb7-2">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> (<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">locals</span>(), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"_"</span>):</span>
+<span id="cb7-3">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">not</span> _.startswith(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"__"</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">and</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">not</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> __export__:</span>
+<span id="cb7-4">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">del</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">locals</span>()[_]</span></code></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="closing" class="level2">
+<h2 class="anchored" data-anchor-id="closing">Closing</h2>
+<p>This all might seem a bit strange, but I really like this design pattern. When writing code in this way, I find I’m constantly thinking about the required <strong>lifetime</strong> of each name I introduce. For simplicity’s sake, there’s a strong argument in favor of keeping each name for the shortest possible lifetime. Following this advice to its conclusion results in Python modules which are sparse, simple for users to interact with and understand, and which have clearly separated import-time and usage-time dependencies.</p>
+<p>Check out my open-source Python package, <a href="https://pypi.org/project/module-hygiene"><code>module-hygiene</code></a>, which implements the recipe described in this post!</p>
+
+
+<!-- -->
+
+</section>
+
+ ]]></description>
+  <category>Python</category>
+  <category>Design Patterns</category>
+  <category>Technical</category>
+  <category>Cursed</category>
+  <guid>https://loopy.software/blog/posts/python-module-hygiene/index.html</guid>
+  <pubDate>Sat, 27 Aug 2022 05:00:00 GMT</pubDate>
+  <media:content url="https://loopy.software/images/module-hygiene.png" medium="image" type="image/png" height="58" width="144"/>
+</item>
+<item>
+  <title>HORIZONS Scripting Interface</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/blog/posts/jpl-horizons-scripts/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This tutorial describes an <a href="https://ssd.jpl.nasa.gov/horizons/manual.html#command-line">indefinitely supported</a>, yet obselete automated command-line interface to the JPL HORIZONS system. The recommended methods for automatically downloading JPL HORIZONS ephemeris data is the <a href="https://ssd.jpl.nasa.gov/horizons/app.html#/">graphical interface</a>, or the new <a href="https://ssd-api.jpl.nasa.gov/doc/horizons.html">REST API</a>.</p>
+</div>
+</div>
+</div>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>NASA provides fantastic tools that are available for personal use – one such tool is NASA JPL’s <a href="https://ssd.jpl.nasa.gov/horizons.cgi">HORIZONS</a>. HORIZONS allows users to request positions, velocities, and physical attributes for thousands of bodies in our solar system. Users can request celestial body positions and velocities (often referred to as <em>ephemeris</em>) for several time steps. These orbital states are very accurately modeled! Ephemeris models often include relativistic effects, solar radiation pressure, aspherical bodies, and more. After receiving a <em>grid</em> of orbital states from HORIZONS, a user can <em>interpolate</em> between timesteps to find precise orbital states at any time.</p>
+<p>HORIZONS has a <a href="https://ssd.jpl.nasa.gov/horizons.cgi">web interface</a>, and <a href="https://ssd.jpl.nasa.gov/?horizons">email and Telnet</a> interfaces. While the web interface is simple to use, it does not provide every capability offered by the email and Telnet interfaces. <strong>If you just want one ephemeris file for a specific use case, the web interface is probably ideal!</strong> While I’ve never used the email interface, I <em>have</em> used the Telnet interface – the Telnet interface can be invoked by entering <code>telnet://horizons.jpl.nasa.gov:6775</code> in a terminal of your choice. Otherwise, if you want to batch-request many ephemeris files, read on for a walkthrough for requesting ephemeris files from HORIZONS within a terminal, <em>without</em> manually walking through the Telnet interface!</p>
+</section>
+<section id="procedure" class="level2">
+<h2 class="anchored" data-anchor-id="procedure">Procedure</h2>
+<p>Rather than manually entering your desired ephemeris file attributes through HORIZONS’ web or Telnet interfaces, NASA JPL has provided open-source scripts for automatically fetching ephemeris data from JPL servers. The steps below provide all the information you need to use these scripts, and wrap them with a simple <code>.sh</code> script for ease of use.</p>
+<p>Note that the rest of this walkthrough requires you use a terminal within a Unix-like system. If you want to use a Windows machine, consider using the <a href="https://docs.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux</a>.</p>
+<p>If you follow the directions in this walkthrough verbatim, you’ll fetch a CSV-formatted ephemeris file without any text labels, with columns (from left to right): Julian day, X Position (km), Y Position (km), Z Position (km), X Velocity (km/s), Y Velocity (km/s), Z Velocity (km/s).</p>
+<section id="install-dependencies" class="level3">
+<h3 class="anchored" data-anchor-id="install-dependencies">Install Dependencies</h3>
+<p>JPL’s scripts use <code>expect</code>, an automation tool, to interact with the HORIZONS Telnet interface (so you don’t have to). You will need both <code>expect</code> and <code>telnet</code> installed on your system. JPL’s output ephemeris files contain carriage return characters that are not expected by Unix-like systems. You can install and use <code>sponge</code> (often packaged with <code>moreutils</code>), as shown below, to help remove these carriage returns, and other extraneous information from the data files returned by HORIZONS. If you only wish to remove the carriage return characters, you can also simply open the output ephemeris file in <a href="https://code.visualstudio.com">VSCode</a> – this will re-format the file for your operating system.</p>
+<p><em>Installing Dependencies on MacOS:</em></p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Uses Homebrew, a MacOs package manager: https://brew.sh</span></span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">brew</span> install inetutils <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># provides telnet</span></span>
+<span id="cb1-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">brew</span> install expect    </span>
+<span id="cb1-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">brew</span> install moreutils <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># (optional) provides sponge</span></span></code></pre></div>
+<p><em>Installing Dependencies on Ubuntu:</em></p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Uses apt, the default Ubuntu package manager</span></span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sudo</span> apt install telnet</span>
+<span id="cb2-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sudo</span> apt install expect</span>
+<span id="cb2-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sudo</span> apt install moreutils <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># (optional) provides sponge</span></span></code></pre></div>
+<p>Installation on other systems (Debian, Arch, etc.) is likely very similar to the installation commands above.</p>
+</section>
+<section id="download-jpl-scripts" class="level3">
+<h3 class="anchored" data-anchor-id="download-jpl-scripts">Download JPL Scripts</h3>
+<p>JPL HORIZONS maintains scripts which users interact with through the command-line. See the HORIZONS <a href="https://ssd.jpl.nasa.gov/horizons/manual.html#command-line">documentation</a>, which states…</p>
+<blockquote class="blockquote">
+<p><em>The command-line interface can be automated. However, this is no longer recommended given the APIs introduced in 2021. Deprecated example scripts may be found in the <a href="fhttps://ssd.jpl.nasa.gov/ftp/xfr/SCRIPTS/">FTP directory</a> and will be supported indefinately.</em></p>
+</blockquote>
+<p>The script interface <a href="https://ssd.jpl.nasa.gov/ftp/ssd/SCRIPTS/README"><code>README</code></a> offers information about the existing scripts. Download and read through this file before continuing!</p>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>You must verify you are permitted to download and use these scripts! Refer to the HORIZONS <a href="https://ssd.jpl.nasa.gov/horizons/manual.html#command-line">documentation</a>, the command-line interface <a href="https://ssd.jpl.nasa.gov/ftp/ssd/SCRIPTS/README"><code>README</code></a>, and the script contents to determine if your usage and context forbids you from using these resources. The remainder of this tutorial assumes the user has read these instructions, and has determined they meet the qualifications for downloading and using all HORIZONS resources.</p>
+</div>
+</div>
+</div>
+<p>If you determine you are permitted, download the <code>vec_tbl</code> and <code>vec_tbl.inp</code> from JPL’s servers. The latter sets input parameters for your requested ephemeris data, the former is the ultimate script users can call to <em>get</em> ephemeris data. Remember to read the HORIZONS documentation –&nbsp;usage may not be free for commercial use, and text in each script file may state that some users are not permitted to download and use the scripts.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wget</span> ftp://ssd.jpl.nasa.gov/pub/ssd/SCRIPTS/vec_tbl</span>
+<span id="cb3-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wget</span> ftp://ssd.jpl.nasa.gov/pub/ssd/SCRIPTS/vec_tbl.inp</span></code></pre></div>
+<p>We’ll also need to make <code>vec_tbl</code> executable.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">chmod</span> u+x vec_tbl</span></code></pre></div>
+</section>
+<section id="set-input-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="set-input-parameters">Set Input Parameters</h3>
+<p>The input file, <code>vec_tbl.inp</code>, sets environment variables that <code>vec_tbl</code> uses to walk through the HORIZONS Telnet interface automatically. These parameters provide information like “where should the origin be placed” and “what time window, and what size timesteps should be returned”.</p>
+<p>Edit <code>vec_tbl.inp</code> with your desired ephemeris file parameters. Some helpful parameter values are provided below – these parameters will result in an ephemeris format with the following attributes:</p>
+<ul>
+<li>Origin placed at solar system barycenter</li>
+<li>CSV output with Cartesian coordinates</li>
+<li>Time window from 2020 to 2070, with 6-hour increments</li>
+<li>No text labels in the CSV data</li>
+</ul>
+<p>Note – you can replace <code>@ssb</code> with <code>@sun</code> to place the origin of the ephemeris data at the Sun’s center of mass.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   EMAIL_ADDR    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"your_email_address@aol.net"</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   CENTER        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"@ssb"</span>                       <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   REF_PLANE     <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"FRAME"</span>                      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-4"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   START_TIME    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2020-Jan-1"</span>                 <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   STOP_TIME     <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2070-Jan-1"</span>                 <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   STEP_SIZE     <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"6h"</span>                         <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-7"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   CSV_FORMAT    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"YES"</span>                        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   VEC_TABLE     <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2"</span>                          <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   REF_SYSTEM    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"J2000"</span>                      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   VEC_CORR      <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1"</span>                          <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-11"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   OUT_UNITS     <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1"</span>                          <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-12"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   CSV_FORMAT    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"YES"</span>                        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-13"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   VEC_LABELS    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NO"</span>                         <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-14"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   VEC_DELTA_T   <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NO"</span>                         <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-15"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>   VEC_TABLE     <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2"</span>                          <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+</section>
+<section id="fetch-ephemeris-data" class="level3">
+<h3 class="anchored" data-anchor-id="fetch-ephemeris-data">Fetch Ephemeris Data</h3>
+<p>Now we can use <code>vec_tbl</code> to download Ephemeris data for any celestial body tracked by HORIZONS. The usage for <code>vec_tbl</code> is shown below.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">./vec_tbl</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>BODY_ID<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>OUTPUT_FILENAME<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>The second argument is the NAIF ID for the celestial body you’d like to track. IDs for common solar system bodies are provided in the table below.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Solar System Body</th>
+<th>NAIF ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mercury Barycenter</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Venus Barycenter</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>Earth-Moon Barycenter</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>Mars Barycenter</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>Jupiter Barycenter</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Saturn Barycenter</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>Uranus Barycenter</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>Neptune Barycenter</td>
+<td>8</td>
+</tr>
+<tr class="odd">
+<td>Pluto Barycenter</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<td>Sun</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>Mercury</td>
+<td>199</td>
+</tr>
+<tr class="even">
+<td>Venus</td>
+<td>299</td>
+</tr>
+<tr class="odd">
+<td>Moon</td>
+<td>301</td>
+</tr>
+<tr class="even">
+<td>Earth</td>
+<td>399</td>
+</tr>
+<tr class="odd">
+<td>Mars</td>
+<td>499</td>
+</tr>
+<tr class="even">
+<td>Jupiter</td>
+<td>599</td>
+</tr>
+<tr class="odd">
+<td>Saturn</td>
+<td>699</td>
+</tr>
+<tr class="even">
+<td>Uranus</td>
+<td>799</td>
+</tr>
+<tr class="odd">
+<td>Neptune</td>
+<td>899</td>
+</tr>
+<tr class="even">
+<td>Pluto</td>
+<td>999</td>
+</tr>
+</tbody>
+</table>
+<p>Note the output file will have a preamble, which includes physical characteristics of your selected celestial body, and other information.</p>
+</section>
+<section id="re-format-ephemeris-data-optional" class="level3">
+<h3 class="anchored" data-anchor-id="re-format-ephemeris-data-optional">Re-format Ephemeris Data (optional)</h3>
+<p>The output format of the Ephemeris file will depend on your input parameters provided in <code>vec_tbl.inp</code>. If you’re following this walk-through verbatim (aka using the input parameters provided above), then your output file will have 7 columns: Julian day, date-time label, X, Y, Z positions, X, Y, Z velocities. All columns are numeric, with the exception of column 2 – this makes loading data into MATLAB, Python, or Julia a bit more complicated. We don’t need column 2 to interpolate between Cartesian states, because column 2 is simply a plain-language description of the Julian Day value in column 1. We can use <code>sed</code> and <code>awk</code> magic to strip out the second column, and remove the preamble from the Ephemeris file. The <code>sed</code> and <code>awk</code> commands below are taken directly from the two StackOverflow answers: <a href="https://stackoverflow.com/a/38978201"><code>sed</code> reference</a>, <a href="https://unix.stackexchange.com/a/34686"><code>awk</code> reference</a>. Remember to replace <code>&lt;FILE&gt;</code> with your desired output file name!</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Filter out data-file preamble</span></span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sed</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-n</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/\$\$SOE/,/\$\$EOE/{//!p;}'</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>FILE<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sponge</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>FILE<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> </span>
+<span id="cb7-3"></span>
+<span id="cb7-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Remove second column (data-time label)</span></span>
+<span id="cb7-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">awk</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-F</span> , <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'BEGIN {OFS=FS}  {$2=""; sub(",,", ","); print}'</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>FILE<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sponge</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>FILE<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> </span></code></pre></div>
+<p>Now your file will have only comma-delimited rows of numbers!</p>
+
+
+<!-- -->
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Space</category>
+  <category>Ephemeris</category>
+  <category>Tutorial</category>
+  <category>Technical</category>
+  <guid>https://loopy.software/blog/posts/jpl-horizons-scripts/index.html</guid>
+  <pubDate>Tue, 26 Oct 2021 05:00:00 GMT</pubDate>
+  <media:content url="https://loopy.software/images/jpl-horizons-scripts.png" medium="image" type="image/png" height="58" width="144"/>
+</item>
+<item>
+  <title>Introduction to Dynamics</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/blog/posts/introduction-to-dynamics/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Offprint
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is a section from a control theory note-set I’m writing, <strong>Exploring Control Theory</strong>. It won’t be done for years! Over time, I’ll add chapters to the open-source repository, <a href="https://github.com/cadojo/controls" class="uri">https://github.com/cadojo/controls</a>. Some chapters that stand on their own will be added as blog posts <a href="../../../blog/">here</a>!</p>
+</div>
+</div>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Our end goal as controls engineers is to <em>affect</em> a system in some desired way. To do this, we’ll need a mathematical description of our system. This mathematical description is known as a <em>model</em>. There’s a famous <a href="https://en.wikipedia.org/wiki/All_models_are_wrong">quote</a> about mathematical models: “all models are wrong, but some are useful”.</p>
+<p>This is really important. We are <strong>always</strong> approximating our system by describing it with a model. The question we need to ask is “is our approximate description of our system (our model) good enough?”</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definitions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Model</strong>: a mathematical description of a system</li>
+</ul>
+</div>
+</div>
+<p>But what does this model <em>look like</em>? To answer this question, let’s first discuss system dynamics, and equations of motion.</p>
+</section>
+<section id="dynamics" class="level2">
+<h2 class="anchored" data-anchor-id="dynamics">Dynamics</h2>
+<p>If we want to <em>affect</em> a system, then by definition, the system <em>should</em> be affect-able (is that a word?) by external forces. These “forces” don’t necessarily need to be physical forces: consider the affect of introducing new predators in an ecosystem with the goal of affecting predator-prey populations.</p>
+<p>So we have a mathematical description, and we know we’ll need some changing <em>parameter</em> to affect the mathematical description. Sounds like we need equations! The equations that govern our system are often called <em>equations of motion</em>. Any system that changes due to some external “force” is known as a <em>dynamical</em> system by definition.</p>
+<p>The first step to any controls problem is identifying the <em>dynamics</em>; this usually means defining the <em>equations of motion</em> for our system. A set of <em>equations of motion</em> which describe our <em>dynamical</em> system <strong>is</strong> our model.</p>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
+<p>A really common system in engineering is known as the <strong>spring-mass-damper</strong>. We can roughly describe this system as a block on a table, which is connected to a spring. We can <em>force</em> (a.k.a. <em>affect</em>) this system by pulling on the block to extend or compress the spring.</p>
+<section id="model-construction" class="level3">
+<h3 class="anchored" data-anchor-id="model-construction">Model Construction</h3>
+<p>Let’s figure out our equations of motion. The following question is usually a useful starting point: “what are the forces on our system?” We know we’ll have one external force: us pulling or pushing on the block! Let’s call this external force <img src="https://latex.codecogs.com/png.latex?f_e">. We’ll also have a force due to the spring, and a force due to the friction between the block and the table. The force due to the spring will be <em>proportional</em> to the position of the block with respect to the spring’s neutral position: let’s call the spring constant <img src="https://latex.codecogs.com/png.latex?k">. The force due to friction will be proportional to the <em>velocity</em> of the block (let’s forget about static friction for now): let’s call the coefficient of friction <img src="https://latex.codecogs.com/png.latex?d">.</p>
+<p>With all of the forces identified, we can start constructing the <em>eqautions of motion</em> for this system. If we call our block’s position <img src="https://latex.codecogs.com/png.latex?x">, then the acceleration <img src="https://latex.codecogs.com/png.latex?%5Cddot%7Bx%7D"> will be equal to the sum of our external force <img src="https://latex.codecogs.com/png.latex?f_e">, the spring force <img src="https://latex.codecogs.com/png.latex?k%20x">, and the force due to friction <img src="https://latex.codecogs.com/png.latex?d%20%5Cdot%7Bx%7D">. Summing these forces produces the following (common) spring-mass-damper equation, where <img src="https://latex.codecogs.com/png.latex?m"> is the mass of the block.</p>
+<p><span id="eq-forced-mass-damper"><img src="https://latex.codecogs.com/png.latex?%0Af_e%20=%20m%20%5Cddot%7Bx%7D%20+%20d%20%5Cdot%7Bx%7D%20+%20k%20x%0A%5Ctag%7B1%7D"></span></p>
+<p>We have our model! This is a second-order differential equation (Equation&nbsp;1). It helps to divide all variables into two groups: parameters, and states. States describe the system at some point in time. In this case, state variables answer the following questions: “where is the block, what is the velocity of the block, and what is the acceleration of the block?” One set of valid state variables for this system is <img src="https://latex.codecogs.com/png.latex?x"> and <img src="https://latex.codecogs.com/png.latex?%5Cdot%7Bx%7D">; we don’t need to include <img src="https://latex.codecogs.com/png.latex?%5Cddot%7Bx%7D"> in our list of state variables because we can calculate <img src="https://latex.codecogs.com/png.latex?%5Cddot%7Bx%7D"> from <img src="https://latex.codecogs.com/png.latex?x"> and <img src="https://latex.codecogs.com/png.latex?%5Cdot%7Bx%7D">.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We say “one set of state variables” because there may (and nearly always are) other valid state representations that could completely describe this system! State variables are <strong>not</strong> unique.</p>
+</div>
+</div>
+<p>If we leave states as symbolic, and then look to the equation(s) of motion of a system, the <em>parameters</em> describe a specific <em>instance</em> of a system. Put another way, no matter what values <img src="https://latex.codecogs.com/png.latex?f_e">, <img src="https://latex.codecogs.com/png.latex?d">, and <img src="https://latex.codecogs.com/png.latex?k"> take, this equation of motion is identifiable as a spring-mass-damper. For this reason, we can specify <img src="https://latex.codecogs.com/png.latex?f_e">, <img src="https://latex.codecogs.com/png.latex?d">, and <img src="https://latex.codecogs.com/png.latex?k"> as parameters. We can assume a unit mass for the block for now.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The parameter <img src="https://latex.codecogs.com/png.latex?f_e"> is our <em>control</em> parameter in this example, because we can change <img src="https://latex.codecogs.com/png.latex?f_e"> to affect our system. For now, let’s not differentiate between control parameters and non-control parameters.</p>
+</div>
+</div>
+</section>
+<section id="coding-our-model" class="level3">
+<h3 class="anchored" data-anchor-id="coding-our-model">Coding our Model</h3>
+<p>We can simulate these dynamics with Julia’s <code>DifferentialEquations</code> package. If you’re familiar with MATLAB, <code>DifferentialEquations</code> provides numerical integration solvers that are similar to MATLAB’s <code>ode45</code> (and similar) solvers. We can use the <code>ModelingToolkit</code> package to conveniently put our model to code, and interface with <code>DifferentialEquations</code> for simulation.</p>
+<div class="cell" data-execution_count="2">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">using</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">ModelingToolkit</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">DifferentialEquations</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">Plots</span></span></code></pre></div>
+</details>
+</div>
+<p>Now that we have access to <code>ModelingToolkit</code>, let’s build the model!</p>
+<div class="cell" data-execution_count="3">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">@parameters</span> t fₑ d k</span>
+<span id="cb2-2"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">@variables</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">x</span>(t) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ẋ</span>(t)</span>
+<span id="cb2-3">δ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Differential</span>(t)</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">eqs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [</span>
+<span id="cb2-6">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">δ</span>(x) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> ẋ,</span>
+<span id="cb2-7">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">δ</span>(ẋ)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>ẋ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> k<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> fₑ</span>
+<span id="cb2-8">]</span>
+<span id="cb2-9"></span>
+<span id="cb2-10">model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ODESystem</span>(eqs, t, [x, ẋ], [fₑ, d, k]; name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>HarmonicOscillator)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<p><img src="https://latex.codecogs.com/png.latex?%20%5Cbegin%7Balign%7D%0A%5Cfrac%7B%5Cmathrm%7Bd%7D%20x%5Cleft(%20t%20%5Cright)%7D%7B%5Cmathrm%7Bd%7Dt%7D%20=&amp;%20%5Ctextnormal%7B%5C.%7Bx%7D%7D%5Cleft(%20t%20%5Cright)%20%5C%5C%0A%5Cfrac%7B%5Cmathrm%7Bd%7D%20%5Ctextnormal%7B%5C.%7Bx%7D%7D%5Cleft(%20t%20%5Cright)%7D%7B%5Cmathrm%7Bd%7Dt%7D%20=&amp;%20f_e%20-%20d%20%5Ctextnormal%7B%5C.%7Bx%7D%7D%5Cleft(%20t%20%5Cright)%20-%20k%20x%5Cleft(%20t%20%5Cright)%0A%5Cend%7Balign%7D%0A"></p>
+</div>
+</div>
+</section>
+<section id="simulating-our-model" class="level3">
+<h3 class="anchored" data-anchor-id="simulating-our-model">Simulating our Model</h3>
+<p>With <code>model</code> defined above, we can use <code>DifferentialEquations</code> to simulate our system. Of course, to do this we’ll need to specify numerical values for our parameters, and initial conditions (the simulation starting point) for our state variables. The code below specifies some arbitrary initial conditions and constant parameter values, and simulates the resulting dynamics.</p>
+<div class="cell" data-execution_count="4">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1">problem <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> x₀ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>, ẋ₀ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, dₙ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, kₙ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>, fₙ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, Δt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30.0</span></span>
+<span id="cb3-2">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ODEProblem</span>(</span>
+<span id="cb3-3">        model,</span>
+<span id="cb3-4">        [x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> x₀, ẋ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> ẋ₀],</span>
+<span id="cb3-5">        (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, Δt),</span>
+<span id="cb3-6">        [d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> dₙ, k <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> kₙ, fₑ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=&gt;</span> fₙ]</span>
+<span id="cb3-7">    )</span>
+<span id="cb3-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb3-9"></span>
+<span id="cb3-10">solutions <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">solve</span>(problem, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Tsit5</span>(); reltol <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-12</span>, abstol <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-12</span>)</span>
+<span id="cb3-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(solutions; linewidth <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, dpi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">130</span>, title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring Mass Damper Simulation"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<p><img src="https://loopy.software/blog/posts/introduction-to-dynamics/index_files/figure-html/cell-5-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+
+
+<!-- -->
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Julia</category>
+  <category>Dynamics</category>
+  <category>Offprint</category>
+  <category>Technical</category>
+  <guid>https://loopy.software/blog/posts/introduction-to-dynamics/index.html</guid>
+  <pubDate>Sun, 04 Jul 2021 05:00:00 GMT</pubDate>
+  <media:content url="https://loopy.software/images/introduction-to-dynamics.png" medium="image" type="image/png" height="58" width="144"/>
+</item>
+</channel>
+</rss>

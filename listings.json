@@ -1,0 +1,33 @@
+[
+  {
+    "listing": "/astronomy/index.html",
+    "items": [
+      "/astronomy/logs/2023-02-04/index.html",
+      "/astronomy/logs/2022-12-26/index.html",
+      "/astronomy/logs/2023-01-14/index.html"
+    ]
+  },
+  {
+    "listing": "/blog/index.html",
+    "items": [
+      "/blog/posts/skipping-entry/index.html",
+      "/blog/posts/wrongful-partisanship/index.html",
+      "/blog/posts/python-module-hygiene/index.html",
+      "/blog/posts/jpl-horizons-scripts/index.html",
+      "/blog/posts/introduction-to-dynamics/index.html"
+    ]
+  },
+  {
+    "listing": "/packages/index.html",
+    "items": [
+      "/packages/foss/AstrodynamicalModels.jl/index.html",
+      "/packages/foss/GeneralAstrodynamics.jl/index.html",
+      "/packages/foss/HorizonsAPI.jl/index.html",
+      "/packages/foss/HorizonsEphemeris.jl/index.html",
+      "/packages/foss/PolynomialGTM.jl/index.html",
+      "/packages/foss/block-scopes/index.html",
+      "/packages/foss/module-hygiene/index.html",
+      "/packages/foss/rich-admonitions/index.html"
+    ]
+  }
+]

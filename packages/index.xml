@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>`package(loopy.software)`</title>
+<link>https://loopy.software/packages/index.html</link>
+<atom:link href="https://loopy.software/packages/index.xml" rel="self" type="application/rss+xml"/>
+<description>_The open source software packages I&#39;ve developed and released!_</description>
+<image>
+<url>https://loopy.software/images/orbits.jpeg</url>
+<title>`package(loopy.software)`</title>
+<link>https://loopy.software/packages/index.html</link>
+</image>
+<generator>quarto-1.3.340</generator>
+<lastBuildDate>Sat, 29 Apr 2023 22:57:30 GMT</lastBuildDate>
+<item>
+  <title>AstrodynamicalModels.jl</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/packages/foss/AstrodynamicalModels.jl/index.html</link>
+  <description><![CDATA[ 
+<meta http-equiv="Refresh" content="0; url=https://docs.loopy.software/AstrodynamicalModels.jl">
+
+<h3 class="anchored">👋 This is not the droid you're looking for...</h3>
+<p>
+This page should automatically forward you to the documentation for 
+<a href="https://docs.loopy.software/AstrodynamicalModels.jl">AstrodynamicalModels.jl</a>!
+If you're seeing this page, that redirection probably didn't work. Consider 
+<a href="https://github.com/cadojo/loopy.software/issues/new">opening an issue</a> if the problem 
+persists! In the meantime, head over to <a href="https://docs.loopy.software/AstrodynamicalModels.jl">https://docs.loopy.software/AstrodynamicalModels.jl</a> to 
+find the content you came here for.
+</p>
+
+
+
+
+
+
+<!-- -->
+
+
+ ]]></description>
+  <category>Julia</category>
+  <category>Modeling</category>
+  <category>Astrodynamics</category>
+  <guid>https://loopy.software/packages/foss/AstrodynamicalModels.jl/index.html</guid>
+  <pubDate>Sat, 29 Apr 2023 22:57:30 GMT</pubDate>
+  <media:content url="https://loopy.software/packages/foss/AstrodynamicalModels.jl/usage.png" medium="image" type="image/png" height="79" width="144"/>
+</item>
+<item>
+  <title>GeneralAstrodynamics.jl</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/packages/foss/GeneralAstrodynamics.jl/index.html</link>
+  <description><![CDATA[ 
+<meta http-equiv="Refresh" content="0; url=https://docs.loopy.software/GeneralAstrodynamics.jl">
+
+<h3 class="anchored">👋 This is not the droid you're looking for...</h3>
+<p>
+This page should automatically forward you to the documentation for 
+<a href="https://docs.loopy.software/GeneralAstrodynamics.jl">GeneralAstrodynamics.jl</a>!
+If you're seeing this page, that redirection probably didn't work. Consider 
+<a href="https://github.com/cadojo/loopy.software/issues/new">opening an issue</a> if the problem 
+persists! In the meantime, head over to <a href="https://docs.loopy.software/GeneralAstrodynamics.jl">https://docs.loopy.software/GeneralAstrodynamics.jl</a> to 
+find the content you came here for.
+</p>
+
+
+
+
+
+
+<!-- -->
+
+
+ ]]></description>
+  <category>Julia</category>
+  <category>Dynamics</category>
+  <category>Astrodynamics</category>
+  <guid>https://loopy.software/packages/foss/GeneralAstrodynamics.jl/index.html</guid>
+  <pubDate>Sat, 29 Apr 2023 22:57:30 GMT</pubDate>
+  <media:content url="https://loopy.software/packages/foss/GeneralAstrodynamics.jl/halos.png" medium="image" type="image/png" height="79" width="144"/>
+</item>
+<item>
+  <title>HorizonsAPI.jl</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/packages/foss/HorizonsAPI.jl/index.html</link>
+  <description><![CDATA[ 
+<meta http-equiv="Refresh" content="0; url=https://docs.loopy.software/HorizonsAPI.jl">
+
+<h3 class="anchored">👋 This is not the droid you're looking for...</h3>
+<p>
+This page should automatically forward you to the documentation for 
+<a href="https://docs.loopy.software/HorizonsAPI.jl">HorizonsAPI.jl</a>!
+If you're seeing this page, that redirection probably didn't work. Consider 
+<a href="https://github.com/cadojo/loopy.software/issues/new">opening an issue</a> if the problem 
+persists! In the meantime, head over to <a href="https://docs.loopy.software/HorizonsAPI.jl">https://docs.loopy.software/HorizonsAPI.jl</a> to 
+find the content you came here for.
+</p>
+
+
+
+
+
+
+<!-- -->
+
+
+ ]]></description>
+  <category>Julia</category>
+  <category>Ephemeris</category>
+  <category>Astrodynamics</category>
+  <guid>https://loopy.software/packages/foss/HorizonsAPI.jl/index.html</guid>
+  <pubDate>Sat, 29 Apr 2023 22:57:30 GMT</pubDate>
+  <media:content url="https://loopy.software/packages/foss/HorizonsAPI.jl/usage.png" medium="image" type="image/png" height="88" width="144"/>
+</item>
+<item>
+  <title>HorizonsEphemeris.jl</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/packages/foss/HorizonsEphemeris.jl/index.html</link>
+  <description><![CDATA[ 
+<meta http-equiv="Refresh" content="0; url=https://docs.loopy.software/HorizonsEphemeris.jl">
+
+<h3 class="anchored">👋 This is not the droid you're looking for...</h3>
+<p>
+This page should automatically forward you to the documentation for 
+<a href="https://docs.loopy.software/HorizonsEphemeris.jl">HorizonsEphemeris.jl</a>!
+If you're seeing this page, that redirection probably didn't work. Consider 
+<a href="https://github.com/cadojo/loopy.software/issues/new">opening an issue</a> if the problem 
+persists! In the meantime, head over to <a href="https://docs.loopy.software/HorizonsEphemeris.jl">https://docs.loopy.software/HorizonsEphemeris.jl</a> to 
+find the content you came here for.
+</p>
+
+
+
+
+
+
+<!-- -->
+
+
+ ]]></description>
+  <category>Julia</category>
+  <category>Ephemeris</category>
+  <category>Astrodynamics</category>
+  <guid>https://loopy.software/packages/foss/HorizonsEphemeris.jl/index.html</guid>
+  <pubDate>Sat, 29 Apr 2023 22:57:30 GMT</pubDate>
+  <media:content url="https://loopy.software/packages/foss/HorizonsEphemeris.jl/usage.png" medium="image" type="image/png" height="96" width="144"/>
+</item>
+<item>
+  <title>PolynomialGTM.jl</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/packages/foss/PolynomialGTM.jl/index.html</link>
+  <description><![CDATA[ 
+<meta http-equiv="Refresh" content="0; url=https://docs.loopy.software/PolynomialGTM.jl">
+
+<h3 class="anchored">👋 This is not the droid you're looking for...</h3>
+<p>
+This page should automatically forward you to the documentation for 
+<a href="https://docs.loopy.software/PolynomialGTM.jl">PolynomialGTM.jl</a>!
+If you're seeing this page, that redirection probably didn't work. Consider 
+<a href="https://github.com/cadojo/loopy.software/issues/new">opening an issue</a> if the problem 
+persists! In the meantime, head over to <a href="https://docs.loopy.software/PolynomialGTM.jl">https://docs.loopy.software/PolynomialGTM.jl</a> to 
+find the content you came here for.
+</p>
+
+
+
+
+
+
+<!-- -->
+
+
+ ]]></description>
+  <category>Julia</category>
+  <category>Dynamics</category>
+  <category>Modeling</category>
+  <guid>https://loopy.software/packages/foss/PolynomialGTM.jl/index.html</guid>
+  <pubDate>Sat, 29 Apr 2023 22:57:30 GMT</pubDate>
+  <media:content url="https://loopy.software/packages/foss/PolynomialGTM.jl/usage.png" medium="image" type="image/png" height="96" width="144"/>
+</item>
+<item>
+  <title>block-scopes</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/packages/foss/block-scopes/index.html</link>
+  <description><![CDATA[ 
+<meta http-equiv="Refresh" content="0; url=https://github.com/cadojo/block-scopes/blob/main/README.md">
+
+<h3 class="anchored">👋 This is not the droid you're looking for...</h3>
+<p>
+This page should automatically forward you to the documentation for 
+<a href="https://github.com/cadojo/block-scopes/blob/main/README.md">block-scopes</a>!
+If you're seeing this page, that redirection probably didn't work. Consider 
+<a href="https://github.com/cadojo/loopy.software/issues/new">opening an issue</a> if the problem 
+persists! In the meantime, head over to <a href="https://github.com/cadojo/block-scopes/blob/main/README.md">https://github.com/cadojo/block-scopes/blob/main/README.md</a> to 
+find the content you came here for.
+</p>
+
+
+
+
+
+
+<!-- -->
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Cursed</category>
+  <category>Scoping</category>
+  <guid>https://loopy.software/packages/foss/block-scopes/index.html</guid>
+  <pubDate>Sat, 29 Apr 2023 22:57:30 GMT</pubDate>
+  <media:content url="https://loopy.software/packages/foss/block-scopes/usage.png" medium="image" type="image/png" height="102" width="144"/>
+</item>
+<item>
+  <title>module-hygiene</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/packages/foss/module-hygiene/index.html</link>
+  <description><![CDATA[ 
+<meta http-equiv="Refresh" content="0; url=https://github.com/cadojo/module-hygiene/blob/main/README.md">
+
+<h3 class="anchored">👋 This is not the droid you're looking for...</h3>
+<p>
+This page should automatically forward you to the documentation for 
+<a href="https://github.com/cadojo/module-hygiene/blob/main/README.md">module-hygiene</a>!
+If you're seeing this page, that redirection probably didn't work. Consider 
+<a href="https://github.com/cadojo/loopy.software/issues/new">opening an issue</a> if the problem 
+persists! In the meantime, head over to <a href="https://github.com/cadojo/module-hygiene/blob/main/README.md">https://github.com/cadojo/module-hygiene/blob/main/README.md</a> to 
+find the content you came here for.
+</p>
+
+
+
+
+
+
+<!-- -->
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Cursed</category>
+  <category>Scoping</category>
+  <guid>https://loopy.software/packages/foss/module-hygiene/index.html</guid>
+  <pubDate>Sat, 29 Apr 2023 22:57:30 GMT</pubDate>
+  <media:content url="https://loopy.software/packages/foss/module-hygiene/usage.png" medium="image" type="image/png" height="118" width="144"/>
+</item>
+<item>
+  <title>rich-admonitions</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/packages/foss/rich-admonitions/index.html</link>
+  <description><![CDATA[ 
+<meta http-equiv="Refresh" content="0; url=https://github.com/cadojo/rich-admonitions/blob/main/README.md">
+
+<h3 class="anchored">👋 This is not the droid you're looking for...</h3>
+<p>
+This page should automatically forward you to the documentation for 
+<a href="https://github.com/cadojo/rich-admonitions/blob/main/README.md">rich-admonitions</a>!
+If you're seeing this page, that redirection probably didn't work. Consider 
+<a href="https://github.com/cadojo/loopy.software/issues/new">opening an issue</a> if the problem 
+persists! In the meantime, head over to <a href="https://github.com/cadojo/rich-admonitions/blob/main/README.md">https://github.com/cadojo/rich-admonitions/blob/main/README.md</a> to 
+find the content you came here for.
+</p>
+
+
+
+
+
+
+<!-- -->
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Styling</category>
+  <category>Terminal</category>
+  <guid>https://loopy.software/packages/foss/rich-admonitions/index.html</guid>
+  <pubDate>Sat, 29 Apr 2023 22:57:30 GMT</pubDate>
+  <media:content url="https://loopy.software/packages/foss/rich-admonitions/usage.png" medium="image" type="image/png" height="100" width="144"/>
+</item>
+</channel>
+</rss>

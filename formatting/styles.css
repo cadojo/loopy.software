@@ -1,0 +1,42 @@
+/* :root {
+    --bs-body-bg: white;
+    --bs-body-color: black;
+    --code-block-bg: rgb(0, 128, 0, .25);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bs-body-bg: black;
+        --bs-body-color: rgba(255, 255, 255, 0.9);
+        --code-block-bg: rgba(0, 128, 0, 0.1);
+    }
+}
+
+.nav-footer {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+.form-select {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+.sidebar {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+#quarto-sidebar {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+.code {
+    background-color: var(--code-block-bg);
+}
+
+.navbar-brand .navbar-title .code {
+    background-color: #054c2b;
+} */
+

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Night Sky Observations</title>
+<link>https://loopy.software/astronomy/index.html</link>
+<atom:link href="https://loopy.software/astronomy/index.xml" rel="self" type="application/rss+xml"/>
+<description>An amateur astronomy log of objects observed in the night sky.</description>
+<image>
+<url>https://loopy.software/images/orbits.jpeg</url>
+<title>Night Sky Observations</title>
+<link>https://loopy.software/astronomy/index.html</link>
+</image>
+<generator>quarto-1.3.340</generator>
+<lastBuildDate>Sat, 04 Feb 2023 06:00:00 GMT</lastBuildDate>
+<item>
+  <title>Stars at Brazos Bend</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/astronomy/logs/2023-02-04/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>I drove one hour south of Houston to Brazos Bend State Park. This park hosts the George Observatory, but I didn’t set up at the observatory. I drove around the back of the observatory to a parking lot next to a lake for fishing. The moon was one night short of the Snow Moon, and it was so bright it hurt to look at through the telescope. I looked at Orion’s Belt, Mairen’s Nebula below Orion, and Sirius.</p>
+</section>
+<section id="conditions" class="level2">
+<h2 class="anchored" data-anchor-id="conditions">Conditions</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>I’ll clean this up and formalize the format later!</p>
+</div>
+</div>
+</div>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Temperature</td>
+<td><img src="https://latex.codecogs.com/png.latex?50%5E%5Ccirc"> Fahrenheit</td>
+</tr>
+<tr class="even">
+<td>Location</td>
+<td>Brazos Bend State Park, TX</td>
+</tr>
+<tr class="odd">
+<td>Time</td>
+<td>9 PM</td>
+</tr>
+<tr class="even">
+<td>Objects</td>
+<td>Sirius, Orion’s Belt, Mairen’s Nebula</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+ ]]></description>
+  <category>Orion</category>
+  <guid>https://loopy.software/astronomy/logs/2023-02-04/index.html</guid>
+  <pubDate>Sat, 04 Feb 2023 06:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>First Light</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/astronomy/logs/2022-12-26/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>I used my ST 80 for the first time! It was freezing out, so I wasn’t out too long. I set the telescope up at the front steps of my childhood home. I them moved the telescope onto the lawn to avoid a streetlight’s ray, and I eventually moved to the edge of the driveway for the same reason. I only looked at Jupiter, and could only successfully view Jupiter with the 25mm and 10mm lenses. My dad helped me set up the telescope mount in its altitude / azimuth configuration, and he helped find Jupiter with the 10mm lens. I don’t think we used the barlow lens with either eyepiece. When using the 3mm eyepiece, all we saw was dark. I think we were just not looking in the right place, but I’m still don’t fully understand why we didn’t see <em>any</em> stars with the 3mm eyepiece. It was a lot of fun! We ultimately saw Jupiter, and two of Jupiter’s moons laid out diagonally from Jupiter’s lower left to upper right. The moons were tiny, but very bright. I remember feeling extremely excited to use the telescope again.</p>
+</section>
+<section id="conditions" class="level2">
+<h2 class="anchored" data-anchor-id="conditions">Conditions</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>I’ll clean this up and formalize the format later!</p>
+</div>
+</div>
+</div>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Temperature</td>
+<td><img src="https://latex.codecogs.com/png.latex?20%5E%5Ccirc"> Fahrenheit</td>
+</tr>
+<tr class="even">
+<td>Location</td>
+<td>Lawrence, NJ</td>
+</tr>
+<tr class="odd">
+<td>Time</td>
+<td>9 PM</td>
+</tr>
+<tr class="even">
+<td>Objects</td>
+<td>Jupiter, Two Moons of Jupiter</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+ ]]></description>
+  <category>Jupiter</category>
+  <guid>https://loopy.software/astronomy/logs/2022-12-26/index.html</guid>
+  <pubDate>Mon, 26 Dec 2022 06:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Mars at Buffalo Bayou</title>
+  <dc:creator>Joe(y) Carpinelli</dc:creator>
+  <link>https://loopy.software/astronomy/logs/2023-01-14/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>Casey and I went to the park to try out the telescope together. We set up with a blanket in a field below the pavilion; it was a nice spot! We were able to find Mars (well, Casey was able to find Mars) and we used every eyepiece I have: 25mm, 10mm, and 3mm. We also used the Barlow Lens with the 3mm piece, which produced a very blurry (but large) view of Mars. It was very, very red. Cool!</p>
+</section>
+<section id="conditions" class="level2">
+<h2 class="anchored" data-anchor-id="conditions">Conditions</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>I’ll clean this up and formalize the format later!</p>
+</div>
+</div>
+</div>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Temperature</td>
+<td><img src="https://latex.codecogs.com/png.latex?50%5E%5Ccirc"> Fahrenheit</td>
+</tr>
+<tr class="even">
+<td>Location</td>
+<td>Houston, TX</td>
+</tr>
+<tr class="odd">
+<td>Time</td>
+<td>9 PM</td>
+</tr>
+<tr class="even">
+<td>Objects</td>
+<td>Mars</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+ ]]></description>
+  <category>Mars</category>
+  <guid>https://loopy.software/astronomy/logs/2023-01-14/index.html</guid>
+  <pubDate>Fri, 14 Jan 2022 06:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>
