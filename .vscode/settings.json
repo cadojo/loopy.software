@@ -2,5 +2,7 @@
   "cSpell.enableFiletypes": ["!quarto", "mermaid", "toml"],
   "cmake.configureOnOpen": false,
   "prettier.proseWrap": "always",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "python.envFile": ""
 }
