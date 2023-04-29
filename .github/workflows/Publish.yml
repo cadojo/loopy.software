@@ -18,7 +18,8 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: release
-
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Install Python and Dependencies
         uses: actions/setup-python@v4
