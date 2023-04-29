@@ -6,11 +6,13 @@ name: Quarto Publish
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    container:
+      image: julia:1
     permissions:
       contents: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -23,20 +25,24 @@ jobs:
       - run: pip install jupyter
       - run: pip install --upgrade --requirement requirements.txt
 
-      - name: Install Julia
-        uses: julia-actions/setup-julia@v1
+      - name: Cache Julia dependencies
+        uses: actions/cache@v3
+        if: ${{ env.JULIA_CACHE != '0'}}
+        with:
+          path: ~/.julia
+          key: ${{ runner.os }}-juliacontainer-${{ env.JULIA_CACHE }}-${{ hashFiles('**/Manifest.toml') }}
+          
+      - name: Install Julia dependencies
+        env:
+          JULIA_PROJECT: ${{ github.workspace }}
+        run: julia --color=yes -e 'import Pkg; Pkg.instantiate(); Pkg.resolve(); Pkg.precompile()'
 
-      - name: Install Julia Dependencies
-        uses: julia-actions/cache@v1
-      - run: julia --project -e 'using Pkg; Pkg.instantiate()'
-
-      - uses: actions/cache@v1
+      - uses: actions/cache@v3
         env:
           cache-name: quarto-freeze
         with:
           path: _freeze
           key: ${{ runner.os }}-${{ env.cache-name }}
-          restore-keys: ${{ runner.os }}-${{ env.cache-name }}
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
