@@ -213,9 +213,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#astrodynamicalmodels.jl" id="toc-astrodynamicalmodels.jl" class="nav-link" data-scroll-target="#astrodynamicalmodels.jl"><code>AstrodynamicalModels.jl</code></a></li>
   <li><a href="#manipulatorkinematics.jl" id="toc-manipulatorkinematics.jl" class="nav-link" data-scroll-target="#manipulatorkinematics.jl"><code>ManipulatorKinematics.jl</code></a></li>
   <li><a href="#polynomialgtm.jl" id="toc-polynomialgtm.jl" class="nav-link" data-scroll-target="#polynomialgtm.jl"><code>PolynomialGTM.jl</code></a></li>
+  <li><a href="#horizonsapi.jl" id="toc-horizonsapi.jl" class="nav-link" data-scroll-target="#horizonsapi.jl"><code>HorizonsAPI.jl</code></a></li>
+  <li><a href="#horizonsephemeris.jl" id="toc-horizonsephemeris.jl" class="nav-link" data-scroll-target="#horizonsephemeris.jl"><code>HorizonsEphemeris.jl</code></a></li>
+  <li><a href="#solarsystemsurrogates.jl" id="toc-solarsystemsurrogates.jl" class="nav-link" data-scroll-target="#solarsystemsurrogates.jl"><code>SolarSystemSurrogates.jl</code></a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/cadojo/loopy.software/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -255,6 +258,18 @@ ul.task-list li input[type="checkbox"] {
 <section id="polynomialgtm.jl" class="level3">
 <h3 class="anchored" data-anchor-id="polynomialgtm.jl"><code>PolynomialGTM.jl</code></h3>
 <p>This project is an <a href="https://github.com/cadojo/PolynomialGTM.jl">unofficial implementation</a> of publicly available polynomial approximations for NASA’s Generic Transport Model aircraft. Check out this package if you want a sandbox dynamical model for a control theory project! I’m using this package as an example for a control theory <a href="https://github.com/cadojo/controls">note-set</a> I’m writing.</p>
+</section>
+<section id="horizonsapi.jl" class="level3">
+<h3 class="anchored" data-anchor-id="horizonsapi.jl"><code>HorizonsAPI.jl</code></h3>
+<p>This project wraps the JPL Horizons REST API word-for-word! You can use this to do anything the Horizons API allows; request planetary ephemeris, download close approach tables, and more.</p>
+</section>
+<section id="horizonsephemeris.jl" class="level3">
+<h3 class="anchored" data-anchor-id="horizonsephemeris.jl"><code>HorizonsEphemeris.jl</code></h3>
+<p>This projects wraps the word-for-word wrapper — <code>HorizonsAPI.jl</code> — with a simpler interface. It’s also currently more limited! This package currently only supports downloading Cartesian ephemeris. The <code>ephemeris</code> function returns CSV-formatted position and velocity data for any solar system body supported by JPL Horizons; the returned type supports the <code>Tables.jl</code> interface, so you can pass it right on to the <code>DataFrame</code> and related constructors without issue!</p>
+</section>
+<section id="solarsystemsurrogates.jl" class="level3">
+<h3 class="anchored" data-anchor-id="solarsystemsurrogates.jl"><code>SolarSystemSurrogates.jl</code></h3>
+<p>This is yet unreleased, but I’m excited about it! I’m trying to train surrogate models on planetary ephemeris data, so you don’t need to download ephemeris at all for casual applications. Fingers crossed it works!</p>
 
 
 </section>
@@ -658,7 +673,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/bucca_di_joey">
+    <a class="nav-link" href="https://twitter.com/code_typed">
       <i class="bi bi-twitter" role="img" aria-label="Twitter">
 </i> 
     </a>
