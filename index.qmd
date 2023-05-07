@@ -25,15 +25,15 @@ sidebar: false
   <script>
     let facts = [
       'Our planet\'s sky glows blue!',
-      'The Vatican has more popes per capita than anywhere else.                                       ',
-      'There are more trees on Earth than stars in the Milky Way.                                      ',
-      'Humans consume around 12 billion pounds of coffee per year.                                     ',
-      'Earth is the only planet in our solar system with rainbows.                                     ',
-      'Modern transisters are smaller than the wavelength of visible light.                            ',
-      'That shooting star you saw could\'ve been astronaut poop!                                       ',
-      'In 2008, Norway knighted a penguin named Nils Olav.                                             ',
-      'The most money ever paid for a cow in an auction was $1.3 million.                              ',
-      'Every year, about 98% of the atoms in your body are replaced.                                   ',
+      'The Vatican has more popes per capita than anywhere else.',
+      'There are more trees on Earth than stars in the Milky Way.',
+      'Humans consume around 12 billion pounds of coffee per year.',
+      'Earth is the only planet in our solar system with rainbows.',
+      'Modern transisters are smaller than the wavelength of visible light.',
+      'That shooting star you saw could\'ve been astronaut poop!',
+      'In 2008, Norway knighted a penguin named Nils Olav.',
+      'The most money ever paid for a cow in an auction was $1.3 million.',
+      'Every year, about 98% of the atoms in your body are replaced.',
       'Elephants are the only mammals that can\'t jump.',
       'Elephants are the only mammals with four knees.',
       'American car horns beep in the tone of F.',
@@ -47,3 +47,4 @@ sidebar: false
 </div>
 
 :::
+

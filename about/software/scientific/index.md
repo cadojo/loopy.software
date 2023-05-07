@@ -34,3 +34,23 @@ simple C++, MATLAB, and Stan code generation capabilities in [`Symbolics.jl`](ht
 This project is an [unofficial implementation](https://github.com/cadojo/PolynomialGTM.jl) of publicly available 
 polynomial approximations for NASA's Generic Transport Model aircraft. Check out this package if you want a sandbox 
 dynamical model for a control theory project! I'm using this package as an example for a control theory [note-set](https://github.com/cadojo/controls) I'm writing.
+
+### `HorizonsAPI.jl`
+
+This project wraps the JPL Horizons REST API word-for-word! You can use this to do anything
+the Horizons API allows; request planetary ephemeris, download close approach tables, and more.
+
+### `HorizonsEphemeris.jl`
+
+This projects wraps the word-for-word wrapper — `HorizonsAPI.jl` — with a simpler interface. 
+It's also currently more limited! This package currently only supports downloading Cartesian
+ephemeris. The `ephemeris` function returns CSV-formatted position and velocity data for any 
+solar system body supported by JPL Horizons; the returned type supports the `Tables.jl` 
+interface, so you can pass it right on to the `DataFrame` and related constructors without
+issue!
+
+### `SolarSystemSurrogates.jl`
+
+This is yet unreleased, but I'm excited about it! I'm trying to train surrogate models on 
+planetary ephemeris data, so you don't need to download ephemeris at all for casual applications.
+Fingers crossed it works!

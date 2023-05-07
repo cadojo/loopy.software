@@ -31,7 +31,6 @@ website:
 
   site-url: https://loopy.software
   repo-url: https://github.com/cadojo/loopy.software
-  repo-actions: [issue]
   search:
     type: textbox
   page-navigation: true
@@ -46,7 +45,7 @@ website:
         href: privacy/index.qmd
     right:
       - icon: twitter
-        href: https://twitter.com/bucca_di_joey
+        href: https://twitter.com/code_typed
         aria-label: Twitter
       - icon: github
         href: https://github.com/cadojo

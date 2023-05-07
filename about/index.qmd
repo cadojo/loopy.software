@@ -3,12 +3,12 @@ title:
   '<code style="color: var(--bs-body-color); background-color:
   var(--bs-body-bg);">about(loopy.software)</code>'
 subtitle:
-  "_Information about my background, education, and interests._"
+  "_Who I am, and my background, education, and professional interests._"
 ---
 
-:::{.callout-note appearance="simple"}
 
-Check the sidebar for more information about me! If you're looking for general information,
-start at the [About](/about/index.html) section's [Introduction](/about/background/introduction/).
+This section of the website serves as my professional portfolio. Most of the content relates
+to my open source software development work, and public presentations I've given. You can 
+find my **professional resume** at [`loopy.software/about/resume.pdf`](./resume.pdf). Otherwise,
+head to my [Background](background/introduction/) page for more general information about me!
 
-:::
