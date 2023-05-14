@@ -10,6 +10,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/posts/solar-system-surrogates/index.html",
       "/blog/posts/skipping-entry/index.html",
       "/blog/posts/wrongful-partisanship/index.html",
       "/blog/posts/python-module-hygiene/index.html",
@@ -24,6 +25,7 @@
       "/packages/foss/GeneralAstrodynamics.jl/index.html",
       "/packages/foss/HorizonsAPI.jl/index.html",
       "/packages/foss/HorizonsEphemeris.jl/index.html",
+      "/packages/foss/Licenses.jl/index.html",
       "/packages/foss/PolynomialGTM.jl/index.html",
       "/packages/foss/block-scopes/index.html",
       "/packages/foss/module-hygiene/index.html",

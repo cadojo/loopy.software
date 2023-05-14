@@ -2,122 +2,130 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://loopy.software/astronomy/logs/2022-12-26/index.html</loc>
-    <lastmod>2023-05-10T22:57:00.899Z</lastmod>
+    <lastmod>2023-05-14T14:09:27.118Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/astronomy/logs/2023-01-14/index.html</loc>
-    <lastmod>2023-05-10T22:57:01.239Z</lastmod>
+    <lastmod>2023-05-14T14:09:27.473Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/astronomy/logs/2023-02-04/index.html</loc>
-    <lastmod>2023-05-10T22:57:01.573Z</lastmod>
+    <lastmod>2023-05-14T14:09:27.805Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/astronomy/index.html</loc>
-    <lastmod>2023-05-10T22:57:01.917Z</lastmod>
+    <lastmod>2023-05-14T14:09:28.162Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/privacy/index.html</loc>
-    <lastmod>2023-05-10T22:57:02.221Z</lastmod>
+    <lastmod>2023-05-14T14:09:28.466Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/usage/index.html</loc>
-    <lastmod>2023-05-10T22:57:02.818Z</lastmod>
+    <lastmod>2023-05-14T14:09:29.076Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/background/introduction/index.html</loc>
-    <lastmod>2023-05-10T22:57:03.137Z</lastmod>
+    <lastmod>2023-05-14T14:09:29.410Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/background/education/index.html</loc>
-    <lastmod>2023-05-10T22:57:03.471Z</lastmod>
+    <lastmod>2023-05-14T14:09:29.753Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/index.html</loc>
-    <lastmod>2023-05-10T22:57:03.774Z</lastmod>
+    <lastmod>2023-05-14T14:09:30.055Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/software/miscellaneous/index.html</loc>
-    <lastmod>2023-05-10T22:57:09.013Z</lastmod>
+    <lastmod>2023-05-14T14:09:36.221Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/software/scientific/index.html</loc>
-    <lastmod>2023-05-10T22:57:09.360Z</lastmod>
+    <lastmod>2023-05-14T14:09:36.567Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/communication/publications/index.html</loc>
-    <lastmod>2023-05-10T22:57:09.664Z</lastmod>
+    <lastmod>2023-05-14T14:09:36.867Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/communication/presentations/index.html</loc>
-    <lastmod>2023-05-10T22:57:09.961Z</lastmod>
+    <lastmod>2023-05-14T14:09:37.184Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/index.html</loc>
-    <lastmod>2023-05-10T22:57:10.245Z</lastmod>
+    <lastmod>2023-05-14T14:09:37.467Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/posts/introduction-to-dynamics/index.html</loc>
-    <lastmod>2023-05-10T22:57:12.469Z</lastmod>
+    <lastmod>2023-05-14T14:09:39.718Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/posts/wrongful-partisanship/index.html</loc>
-    <lastmod>2023-05-10T22:57:13.220Z</lastmod>
+    <lastmod>2023-05-14T14:09:40.508Z</lastmod>
+  </url>
+  <url>
+    <loc>https://loopy.software/blog/posts/solar-system-surrogates/index.html</loc>
+    <lastmod>2023-05-14T14:09:41.037Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/posts/python-module-hygiene/index.html</loc>
-    <lastmod>2023-05-10T22:57:15.721Z</lastmod>
+    <lastmod>2023-05-14T14:09:42.703Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/posts/skipping-entry/index.html</loc>
-    <lastmod>2023-05-10T22:57:19.732Z</lastmod>
+    <lastmod>2023-05-14T14:09:47.008Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/posts/jpl-horizons-scripts/index.html</loc>
-    <lastmod>2023-05-10T22:57:21.124Z</lastmod>
+    <lastmod>2023-05-14T14:09:48.277Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/index.html</loc>
-    <lastmod>2023-05-10T22:57:31.646Z</lastmod>
+    <lastmod>2023-05-14T14:09:58.135Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/index.html</loc>
-    <lastmod>2023-05-10T22:57:32.407Z</lastmod>
+    <lastmod>2023-05-14T14:09:58.921Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/PolynomialGTM.jl/index.html</loc>
-    <lastmod>2023-05-10T22:57:32.712Z</lastmod>
+    <lastmod>2023-05-14T14:09:59.219Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/HorizonsEphemeris.jl/index.html</loc>
-    <lastmod>2023-05-10T22:57:33.015Z</lastmod>
+    <lastmod>2023-05-14T14:09:59.525Z</lastmod>
+  </url>
+  <url>
+    <loc>https://loopy.software/packages/foss/Licenses.jl/index.html</loc>
+    <lastmod>2023-05-14T14:09:59.828Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/HorizonsAPI.jl/index.html</loc>
-    <lastmod>2023-05-10T22:57:33.630Z</lastmod>
+    <lastmod>2023-05-14T14:10:00.417Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/block-scopes/index.html</loc>
-    <lastmod>2023-05-10T22:57:33.925Z</lastmod>
+    <lastmod>2023-05-14T14:10:00.723Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/GeneralAstrodynamics.jl/index.html</loc>
-    <lastmod>2023-05-10T22:57:34.229Z</lastmod>
+    <lastmod>2023-05-14T14:10:01.016Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/module-hygiene/index.html</loc>
-    <lastmod>2023-05-10T22:57:34.524Z</lastmod>
+    <lastmod>2023-05-14T14:10:01.324Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/rich-admonitions/index.html</loc>
-    <lastmod>2023-05-10T22:57:34.817Z</lastmod>
+    <lastmod>2023-05-14T14:10:01.640Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/AstrodynamicalModels.jl/index.html</loc>
-    <lastmod>2023-05-10T22:57:35.120Z</lastmod>
+    <lastmod>2023-05-14T14:10:01.933Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/credits/index.html</loc>
-    <lastmod>2023-05-10T22:57:35.706Z</lastmod>
+    <lastmod>2023-05-14T14:10:02.528Z</lastmod>
   </url>
 </urlset>
