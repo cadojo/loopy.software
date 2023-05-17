@@ -1,6 +1,8 @@
 [deps]
+AstrodynamicalModels = "4282b555-f590-4262-b575-3e516e1493a7"
 DiffEqBase = "2b5f629d-d688-5b77-993f-72d75c75574e"
 DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
+HorizonsEphemeris = "05ee1981-f730-42d8-b713-4f42d99733dc"
 IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
 Latexify = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
 Memoize = "c03570c3-d221-55d1-a50c-7939bbd78826"
