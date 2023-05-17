@@ -1,0 +1,11 @@
+---
+title: "`Licenses.jl`"
+package: Licenses.jl
+image: usage.png
+description: Executable licenses for executable documents!
+docs: "https://docs.loopy.software/Licenses.jl/dev"
+
+categories: 
+  - Julia
+  - Tooling
+---

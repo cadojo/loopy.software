@@ -27,7 +27,6 @@ format:
   html:
     mermaid-format: svg
 
-# jupyter: julia-1.9
 code-fold: true
 execute:
   echo: true

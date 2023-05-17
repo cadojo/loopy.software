@@ -21,8 +21,6 @@ format:
   ipynb: 
     embed-resources: true
     output-file: skipping-entry.ipynb
-
-jupyter: julia-1.8
 ---
 
 :::{.callout-note appearance="simple"}

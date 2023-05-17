@@ -1,0 +1,51 @@
+---
+title: Who's Tracking the Solar System?
+jupyter: julia-1.9
+---
+
+```{julia}
+---
+title: Surrogatizing our Solar System
+subtitle: Model (re-)discovery!
+date: today
+
+draft: true
+
+format:
+  html: default
+  ipynb: 
+    embed-resources: true
+    output-file: solar-system-surrogates.ipynb
+
+pre-render: julia -e 'import Pkg; Pkg.activate("."); Pkg.instantiate()'
+
+categories:
+  - Julia
+  - Dynamics
+  - Space
+  - Technical
+
+execute:
+  echo: true
+  output: true
+---
+```
+
+
+NASA, of course! NASA's Jet Propulsion Laboratory (JPL) offers an excellent service: 
+free solar system ephemeris data through the [Horizons](https://ssd.jpl.nasa.gov/horizons/)
+interface.
+
+
+```{julia}
+#| echo: false
+#| output: false
+begin
+    using Dates
+    using Plots
+    using HorizonsEphemeris
+    using AstrodynamicalModels
+end
+```
+
+
