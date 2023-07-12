@@ -20,7 +20,6 @@ listing:
     image: "/images/orbits.jpeg"
     description:
         "_The open source software packages I've developed and released!_"
-    
 
 aliases:
   - "/packages/foss"
