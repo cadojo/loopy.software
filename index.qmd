@@ -2,7 +2,7 @@
 title: "Joe(y) Carpinelli"
 about:
   id: about-heading
-  template: jolla
+  template: trestles
   image: "images/goats.webp"
   links:
     - icon: github
@@ -20,7 +20,18 @@ sidebar: false
 
 :::{#about-heading}
 
-<div id="lead" class="lead">
+I'm a professional spaceflight controls engineer, and an open source
+scientific software hobbyist. Ease of exploration through computation
+is my favorite (discretionary) benefit of our technological world. Read
+my informal [writing](/blog/) to learn more about the silly projects I 
+work on in spare time. Speaking of, my personal projects are usually 
+available as open source software [packages](/packages)! 
+
+
+:::{.callout-note appearance="simple"}
+## Did you know...
+
+<div id="lead" class="lead" style="font-size: medium">
   <center><p><i>Earth is the only planet with rainbows!</p></i></center>
   <script>
     let facts = [
@@ -42,9 +53,10 @@ sidebar: false
       '1 in 5,000 north Atlantic lobsters are born bright blue.'
     ];
     let fact = facts[Math.floor(Math.random() * facts.length)];
-    document.querySelector("#lead").innerHTML = "<center><p><i>" + fact + "</i></p></center>";
+    document.querySelector("#lead").innerHTML = "<i>" + fact + "</i>";
   </script>
 </div>
+:::
 
 :::
 

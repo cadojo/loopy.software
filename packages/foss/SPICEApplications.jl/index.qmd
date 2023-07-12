@@ -1,0 +1,12 @@
+---
+title: "`SPICEApplications.jl`"
+package: SPICEApplications.jl
+image: usage.png
+description: NASA's SPICE Toolkit executables, all from within Julia!!
+docs: "https://docs.loopy.software/SPICEApplications.jl"
+
+categories: 
+  - Julia
+  - Ephemeris
+  - Astrodynamics
+---

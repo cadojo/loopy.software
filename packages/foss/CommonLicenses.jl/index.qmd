@@ -1,9 +1,9 @@
 ---
-title: "`Licenses.jl`"
-package: Licenses.jl
+title: "`CommonLicenses.jl`"
+package: CommonLicenses.jl
 image: usage.png
 description: Executable licenses for executable documents!
-docs: "https://docs.loopy.software/Licenses.jl/dev"
+docs: "https://docs.loopy.software/CommonLicenses.jl/dev"
 
 categories: 
   - Julia

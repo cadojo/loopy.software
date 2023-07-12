@@ -1,0 +1,12 @@
+---
+title: "`SPICEKernels.jl`"
+package: SPICEKernels.jl
+image: usage.png
+description: All public, general SPICE kernels!
+docs: "https://docs.loopy.software/SPICEKernels.jl"
+
+categories: 
+  - Julia
+  - Ephemeris
+  - Astrodynamics
+---
