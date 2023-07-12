@@ -2,130 +2,134 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://loopy.software/credits/index.html</loc>
-    <lastmod>2023-07-12T03:03:35.076Z</lastmod>
+    <lastmod>2023-07-12T03:11:13.375Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/rich-admonitions/index.html</loc>
-    <lastmod>2023-07-12T03:03:33.874Z</lastmod>
+    <lastmod>2023-07-12T03:11:12.184Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/GeneralAstrodynamics.jl/index.html</loc>
-    <lastmod>2023-07-12T03:03:33.265Z</lastmod>
+    <lastmod>2023-07-12T03:11:11.578Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/HorizonsAPI.jl/index.html</loc>
-    <lastmod>2023-07-12T03:03:32.678Z</lastmod>
+    <lastmod>2023-07-12T03:11:10.971Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/SPICEApplications.jl/index.html</loc>
-    <lastmod>2023-07-12T03:03:32.050Z</lastmod>
+    <lastmod>2023-07-12T03:11:10.358Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/PolynomialGTM.jl/index.html</loc>
-    <lastmod>2023-07-12T03:03:31.447Z</lastmod>
+    <lastmod>2023-07-12T03:11:09.758Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/index.html</loc>
-    <lastmod>2023-07-12T03:03:30.854Z</lastmod>
+    <lastmod>2023-07-12T03:11:08.602Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/posts/jpl-horizons-scripts/index.html</loc>
-    <lastmod>2023-07-12T03:03:21.161Z</lastmod>
+    <lastmod>2023-07-12T03:10:58.923Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/posts/introduction-to-dynamics/index.html</loc>
-    <lastmod>2023-07-12T03:03:11.056Z</lastmod>
+    <lastmod>2023-07-12T03:10:49.336Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/communication/presentations/index.html</loc>
-    <lastmod>2023-07-12T03:03:08.650Z</lastmod>
+    <lastmod>2023-07-12T03:10:47.005Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/software/scientific/index.html</loc>
-    <lastmod>2023-07-12T03:03:08.042Z</lastmod>
+    <lastmod>2023-07-12T03:10:46.415Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/index.html</loc>
-    <lastmod>2023-07-12T03:03:02.306Z</lastmod>
+    <lastmod>2023-07-12T03:10:42.305Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/background/introduction/index.html</loc>
-    <lastmod>2023-07-12T03:03:01.676Z</lastmod>
+    <lastmod>2023-07-12T03:10:41.671Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/astronomy/index.html</loc>
-    <lastmod>2023-07-12T03:03:00.473Z</lastmod>
+    <lastmod>2023-07-12T03:10:40.457Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/astronomy/logs/2023-01-14/index.html</loc>
-    <lastmod>2023-07-12T03:02:59.800Z</lastmod>
+    <lastmod>2023-07-12T03:10:39.786Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/astronomy/logs/2022-12-26/index.html</loc>
-    <lastmod>2023-07-12T03:02:59.448Z</lastmod>
+    <lastmod>2023-07-12T03:10:39.440Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/astronomy/logs/2023-02-04/index.html</loc>
-    <lastmod>2023-07-12T03:03:00.130Z</lastmod>
+    <lastmod>2023-07-12T03:10:40.115Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/privacy/index.html</loc>
-    <lastmod>2023-07-12T03:03:00.775Z</lastmod>
+    <lastmod>2023-07-12T03:10:40.759Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/usage/index.html</loc>
-    <lastmod>2023-07-12T03:03:01.371Z</lastmod>
+    <lastmod>2023-07-12T03:10:41.353Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/background/education/index.html</loc>
-    <lastmod>2023-07-12T03:03:02.014Z</lastmod>
+    <lastmod>2023-07-12T03:10:42.011Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/software/miscellaneous/index.html</loc>
-    <lastmod>2023-07-12T03:03:07.694Z</lastmod>
+    <lastmod>2023-07-12T03:10:46.064Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/about/communication/publications/index.html</loc>
-    <lastmod>2023-07-12T03:03:08.357Z</lastmod>
+    <lastmod>2023-07-12T03:10:46.709Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/index.html</loc>
-    <lastmod>2023-07-12T03:03:08.964Z</lastmod>
+    <lastmod>2023-07-12T03:10:47.322Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/posts/wrongful-partisanship/index.html</loc>
-    <lastmod>2023-07-12T03:03:12.014Z</lastmod>
+    <lastmod>2023-07-12T03:10:50.210Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/posts/python-module-hygiene/index.html</loc>
-    <lastmod>2023-07-12T03:03:15.131Z</lastmod>
+    <lastmod>2023-07-12T03:10:53.286Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/blog/posts/skipping-entry/index.html</loc>
-    <lastmod>2023-07-12T03:03:19.635Z</lastmod>
+    <lastmod>2023-07-12T03:10:57.420Z</lastmod>
+  </url>
+  <url>
+    <loc>https://loopy.software/packages/index.html</loc>
+    <lastmod>2023-07-12T03:11:09.465Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/HorizonsEphemeris.jl/index.html</loc>
-    <lastmod>2023-07-12T03:03:31.742Z</lastmod>
+    <lastmod>2023-07-12T03:11:10.052Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/CommonLicenses.jl/index.html</loc>
-    <lastmod>2023-07-12T03:03:32.369Z</lastmod>
+    <lastmod>2023-07-12T03:11:10.664Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/block-scopes/index.html</loc>
-    <lastmod>2023-07-12T03:03:32.972Z</lastmod>
+    <lastmod>2023-07-12T03:11:11.286Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/module-hygiene/index.html</loc>
-    <lastmod>2023-07-12T03:03:33.569Z</lastmod>
+    <lastmod>2023-07-12T03:11:11.881Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/AstrodynamicalModels.jl/index.html</loc>
-    <lastmod>2023-07-12T03:03:34.175Z</lastmod>
+    <lastmod>2023-07-12T03:11:12.475Z</lastmod>
   </url>
   <url>
     <loc>https://loopy.software/packages/foss/SPICEKernels.jl/index.html</loc>
-    <lastmod>2023-07-12T03:03:34.773Z</lastmod>
+    <lastmod>2023-07-12T03:11:13.085Z</lastmod>
   </url>
 </urlset>

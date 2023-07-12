@@ -16,5 +16,21 @@
       "/astronomy/logs/2022-12-26/index.html",
       "/astronomy/logs/2023-01-14/index.html"
     ]
+  },
+  {
+    "listing": "/packages/index.html",
+    "items": [
+      "/packages/foss/AstrodynamicalModels.jl/index.html",
+      "/packages/foss/CommonLicenses.jl/index.html",
+      "/packages/foss/GeneralAstrodynamics.jl/index.html",
+      "/packages/foss/HorizonsAPI.jl/index.html",
+      "/packages/foss/HorizonsEphemeris.jl/index.html",
+      "/packages/foss/PolynomialGTM.jl/index.html",
+      "/packages/foss/SPICEApplications.jl/index.html",
+      "/packages/foss/SPICEKernels.jl/index.html",
+      "/packages/foss/block-scopes/index.html",
+      "/packages/foss/module-hygiene/index.html",
+      "/packages/foss/rich-admonitions/index.html"
+    ]
   }
 ]

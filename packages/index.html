@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>&lt;code style="color: white; background-color: transparent;"&gt;loopy.software&lt;/code&gt; – index</title>
+<title>loopy.software - package(loopy.software)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,6 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="..//images/profile.webp" rel="icon">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -62,13 +64,56 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-image','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-image","listing-description","listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <meta name="theme-color" content="#114B5F">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../formatting/styles.css">
+<link rel="alternate" type="application/rss+xml" title="`package(loopy.software)`" href="index.xml"><meta property="og:title" content="loopy.software - package(loopy.software)">
+<meta property="og:description" content="The open source software packages I’ve developed and released!">
+<meta property="og:image" content="https://loopy.software/packages/foss/AstrodynamicalModels.jl/usage.png">
+<meta property="og:site-name" content="<code style=&quot;color: white; background-color: transparent;&quot;>loopy.software</code>">
+<meta property="og:image:height" content="948">
+<meta property="og:image:width" content="1728">
+<meta name="twitter:title" content="loopy.software - package(loopy.software)">
+<meta name="twitter:description" content="The open source software packages I’ve developed and released!">
+<meta name="twitter:image" content="https://loopy.software/packages/foss/AstrodynamicalModels.jl/usage.png">
+<meta name="twitter:image-height" content="948">
+<meta name="twitter:image-width" content="1728">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -104,109 +149,351 @@ ul.task-list li input[type="checkbox"] {
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Background</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../about/background/introduction/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../about/background/education/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Education</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Communication</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../about/communication/publications/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Publications</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../about/communication/presentations/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Presentations</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Software</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../about/software/scientific/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Scientific Software</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../about/software/miscellaneous/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Miscellaneous Software</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    </div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(11)</span></div><div class="category" data-category="Astrodynamics">Astrodynamics <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Cursed">Cursed <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Dynamics">Dynamics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Ephemeris">Ephemeris <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Julia">Julia <span class="quarto-category-count">(8)</span></div><div class="category" data-category="Modeling">Modeling <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Python">Python <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Scoping">Scoping <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Styling">Styling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Terminal">Terminal <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Tooling">Tooling <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><code style="color: var(--bs-body-color); background-color: var(--bs-body-bg);">package(loopy.software)</code></h1>
+<p class="subtitle lead"><em>The open source software packages I’ve developed and released!</em></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
 
 
 
 
 
-</main> <!-- /main -->
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="Julia,Modeling,Astrodynamics" data-listing-file-modified-sort="1682808858175" data-listing-reading-time-sort="1">
+<a href="../packages/foss/AstrodynamicalModels.jl/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/AstrodynamicalModels.jl/usage.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>AstrodynamicalModels.jl</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Julia'); return false;">
+Julia
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Modeling'); return false;">
+Modeling
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Astrodynamics'); return false;">
+Astrodynamics
+</div>
+</div>
+<div class="card-text listing-description">
+Construct models commonly used in astrodynamics.
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="Julia,Tooling" data-listing-file-modified-sort="1689130201257" data-listing-reading-time-sort="1">
+<a href="../packages/foss/CommonLicenses.jl/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/CommonLicenses.jl/usage.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>CommonLicenses.jl</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Julia'); return false;">
+Julia
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Tooling'); return false;">
+Tooling
+</div>
+</div>
+<div class="card-text listing-description">
+Executable licenses for executable documents!
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="Julia,Dynamics,Astrodynamics" data-listing-file-modified-sort="1682808858176" data-listing-reading-time-sort="1">
+<a href="../packages/foss/GeneralAstrodynamics.jl/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/GeneralAstrodynamics.jl/halos.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>GeneralAstrodynamics.jl</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Julia'); return false;">
+Julia
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Dynamics'); return false;">
+Dynamics
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Astrodynamics'); return false;">
+Astrodynamics
+</div>
+</div>
+<div class="card-text listing-description">
+General calculations, and iterative solvers, within astrodynamics!
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="3" data-categories="Julia,Ephemeris,Astrodynamics" data-listing-file-modified-sort="1682808858176" data-listing-reading-time-sort="1">
+<a href="../packages/foss/HorizonsAPI.jl/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/HorizonsAPI.jl/usage.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>HorizonsAPI.jl</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Julia'); return false;">
+Julia
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Ephemeris'); return false;">
+Ephemeris
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Astrodynamics'); return false;">
+Astrodynamics
+</div>
+</div>
+<div class="card-text listing-description">
+Query NASA JPL’s HORIZONS interface with Julia!
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="4" data-categories="Julia,Ephemeris,Astrodynamics" data-listing-file-modified-sort="1682808858176" data-listing-reading-time-sort="1">
+<a href="../packages/foss/HorizonsEphemeris.jl/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/HorizonsEphemeris.jl/usage.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>HorizonsEphemeris.jl</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Julia'); return false;">
+Julia
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Ephemeris'); return false;">
+Ephemeris
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Astrodynamics'); return false;">
+Astrodynamics
+</div>
+</div>
+<div class="card-text listing-description">
+Fetch ephemeris data from NASA’s HORIZONS platform.
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="5" data-categories="Julia,Dynamics,Modeling" data-listing-file-modified-sort="1682808858178" data-listing-reading-time-sort="1">
+<a href="../packages/foss/PolynomialGTM.jl/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/PolynomialGTM.jl/usage.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>PolynomialGTM.jl</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Julia'); return false;">
+Julia
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Dynamics'); return false;">
+Dynamics
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Modeling'); return false;">
+Modeling
+</div>
+</div>
+<div class="card-text listing-description">
+Publicly available polynomial models for a model aircraft!
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="6" data-categories="Julia,Ephemeris,Astrodynamics" data-listing-file-modified-sort="1689130410069" data-listing-reading-time-sort="1">
+<a href="../packages/foss/SPICEApplications.jl/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/SPICEApplications.jl/usage.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>SPICEApplications.jl</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Julia'); return false;">
+Julia
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Ephemeris'); return false;">
+Ephemeris
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Astrodynamics'); return false;">
+Astrodynamics
+</div>
+</div>
+<div class="card-text listing-description">
+NASA’s SPICE Toolkit executables, all from within Julia!!
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="7" data-categories="Julia,Ephemeris,Astrodynamics" data-listing-file-modified-sort="1689130451159" data-listing-reading-time-sort="1">
+<a href="../packages/foss/SPICEKernels.jl/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/SPICEKernels.jl/usage.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>SPICEKernels.jl</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Julia'); return false;">
+Julia
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Ephemeris'); return false;">
+Ephemeris
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Astrodynamics'); return false;">
+Astrodynamics
+</div>
+</div>
+<div class="card-text listing-description">
+All public, general SPICE kernels!
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="8" data-categories="Python,Cursed,Scoping" data-listing-file-modified-sort="1682808858179" data-listing-reading-time-sort="1">
+<a href="../packages/foss/block-scopes/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/block-scopes/usage.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>block-scopes</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Python'); return false;">
+Python
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Cursed'); return false;">
+Cursed
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Scoping'); return false;">
+Scoping
+</div>
+</div>
+<div class="card-text listing-description">
+Block scoping in Python!
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="9" data-categories="Python,Cursed,Scoping" data-listing-file-modified-sort="1682808858180" data-listing-reading-time-sort="1">
+<a href="../packages/foss/module-hygiene/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/module-hygiene/usage.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>module-hygiene</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Python'); return false;">
+Python
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Cursed'); return false;">
+Cursed
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Scoping'); return false;">
+Scoping
+</div>
+</div>
+<div class="card-text listing-description">
+Like the <code>__all__</code> variable, but more strict!
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="10" data-categories="Python,Styling,Terminal" data-listing-file-modified-sort="1682808858181" data-listing-reading-time-sort="1">
+<a href="../packages/foss/rich-admonitions/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../packages/foss/rich-admonitions/usage.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<code>rich-admonitions</code>
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Python'); return false;">
+Python
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Styling'); return false;">
+Styling
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Terminal'); return false;">
+Terminal
+</div>
+</div>
+<div class="card-text listing-description">
+Markdown-style admonitions in Python, thanks to <code>rich</code>!
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
