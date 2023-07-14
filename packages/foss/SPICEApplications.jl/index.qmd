@@ -8,5 +8,6 @@ docs: "https://docs.loopy.software/SPICEApplications.jl"
 categories: 
   - Julia
   - Ephemeris
-  - Astrodynamics
+  - Space
+  - Dynamics
 ---

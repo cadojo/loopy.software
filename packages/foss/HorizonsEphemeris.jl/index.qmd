@@ -8,5 +8,7 @@ docs: "https://docs.loopy.software/HorizonsEphemeris.jl"
 categories: 
   - Julia
   - Ephemeris
-  - Astrodynamics
+  - Space
+  - Dynamics
+  - Modeling
 ---

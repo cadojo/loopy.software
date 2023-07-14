@@ -8,5 +8,8 @@ docs: "https://docs.loopy.software/HorizonsAPI.jl"
 categories: 
   - Julia
   - Ephemeris
-  - Astrodynamics
+  - Space
+  - Dynamics
+  - Modeling
+  - REST
 ---

@@ -9,7 +9,7 @@ feed: true
 
 listing:
   contents: foss
-  categories: numbered
+  categories: cloud
   type: grid
   sort: 
     - "title asc"

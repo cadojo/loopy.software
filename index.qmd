@@ -8,35 +8,46 @@ about:
     - icon: github
       text: "GitHub"
       href: https://github.com/cadojo
-    - icon: twitter
-      text: "Twitter"
-      href: https://twitter.com/code_typed
+    - icon: paperclip
+      text: "Résumé"
+      href: /about/resume.pdf
     - icon: envelope
       text: "Email"
       href: "mailto:joseph.d.carpinelli@loopy.software"
 
 sidebar: false
+toc: false
 ---
 
-:::{#about-heading}
+::::{#about-heading .column-body}
+
+:::{.column-body-outset-left}
+### About Me
 
 I'm a professional spaceflight controls engineer, and an open source
-scientific software hobbyist. Ease of exploration through computation
-is my favorite (discretionary) benefit of our technological world. Read
-my informal [writing](/blog/) to learn more about the silly projects I 
+scientific software hobbyist. I owe my love of scientific computing 
+to my (astro)dynamics & controls engineering coursework. Computation
+is still the best educational tool I have. In spare time,
+I love exploring physical concepts through code; primarily [Julia](https://julialang.org)!
+Read my informal [writing](/blog/) to learn more about the silly projects I 
 work on in spare time. Speaking of, my personal projects are usually 
-available as open source software [packages](/packages)! 
+available as open source [software](/packages)! 
+
+## Highlight
+
+Check out my in-development robotic manipulator kinematics package, [`KinematicChains.jl`](https://github.com/cadojo/KinematicChains.jl)! I'm currently tutoring two graduate robotics students. I hope `KinematicChains.jl` serves as a useful educational tool for them, and for other students who are interested in robotics at the college or graduate level. 
+:::
+
+::::
 
 
-:::{.callout-note appearance="simple"}
-## Did you know...
+:::{.callout-tip appearance="minimal" style="width: 66%; margin: auto;"}
 
 <div id="lead" class="lead" style="font-size: medium">
   <center><p><i>Earth is the only planet with rainbows!</p></i></center>
   <script>
     let facts = [
       'Our planet\'s sky glows blue!',
-      'The Vatican has more popes per capita than anywhere else.',
       'There are more trees on Earth than stars in the Milky Way.',
       'Humans consume around 12 billion pounds of coffee per year.',
       'Earth is the only planet in our solar system with rainbows.',
@@ -56,7 +67,5 @@ available as open source software [packages](/packages)!
     document.querySelector("#lead").innerHTML = "<i>" + fact + "</i>";
   </script>
 </div>
-:::
-
 :::
 

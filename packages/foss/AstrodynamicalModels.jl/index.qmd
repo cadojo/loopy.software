@@ -8,5 +8,6 @@ docs: "https://docs.loopy.software/AstrodynamicalModels.jl"
 categories: 
   - Julia
   - Modeling
-  - Astrodynamics
+  - Space
+  - Dynamics
 ---

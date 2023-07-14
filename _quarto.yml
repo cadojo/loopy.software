@@ -18,7 +18,7 @@ format:
       light: [ pulse,  "formatting/common.scss", "formatting/light.scss" ]
       dark:  [ pulse,  "formatting/common.scss", "formatting/dark.scss"  ]
     header-includes: |
-      <meta name="theme-color" content="#4a6e40"/>
+      <meta name="theme-color" content="#406e52"/>
 
 website:
   title: '<code style="color: white; background-color: transparent;">loopy.software</code>'

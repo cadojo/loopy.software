@@ -8,5 +8,6 @@ docs: "https://docs.loopy.software/GeneralAstrodynamics.jl"
 categories: 
   - Julia
   - Dynamics
-  - Astrodynamics
+  - Space
+  - Dynamics
 ---
